@@ -22,12 +22,14 @@ public class ServidorSocket {
     
     //Atributos
     
-    private ObjectOutputStream _entradaObj;
-    private ObjectInputStream _salidaObj;
+    private ObjectInputStream _entradaObj;
+    private ObjectOutputStream _salidaObj;
     
     private ServerSocket _server;
     private Socket _clientConexion;
     
+    
+             
     
                  //Metodos
     
@@ -41,9 +43,8 @@ public class ServidorSocket {
             
         }
         catch(IOException exeptionES)
-        {
-            exeptionES.printStackTrace();            
-        }       
+        {           
+        }   
     }
     
     
@@ -56,16 +57,98 @@ public class ServidorSocket {
     }
     
     //Se establecen los flujos para la entrada y salida de datos
-    private void establecerFlujos()
+    private void establecerFlujos() throws IOException
     {
-        
+        _salidaObj = new ObjectOutputStream(_clientConexion.getOutputStream());
+        _salidaObj.flush();        
+        _entradaObj = new ObjectInputStream(_clientConexion.getInputStream());       
     }
     
-    public void ejectuarServidor()
+    //Envio de datos al cliente
+    private void enviarDatos(Object pobject)
     {
-        while (true)
+        try
         {
+            _salidaObj.writeObject(pobject);
+            _salidaObj.flush();
+            System.out.println("mensaje enviado");
         }
+        catch(IOException exeptionES)
+        {            
+        }       
+    }
+    
+    //Se reciben los datos que el cliente envio
+    private Object recibirDatos() throws IOException
+    {
+        Object objetoRecibido = new Object();
+        try
+        {
+            objetoRecibido = _entradaObj.readObject();            
+        }
+        catch(ClassNotFoundException exeptionNotClass)
+        {            
+        }      
+        return objetoRecibido;
+    }
+    
+    //Procesa cada una de las solicitudes que lleguen al socket
+    private void procesarConexion() throws IOException
+    {
+        String msgReceive;
+        try
+        {
+            msgReceive = (String) recibirDatos();
             
+            if(msgReceive.equals("Sumar"))
+            {
+                System.out.println("Sumar");
+                enviarDatos("Sumando");                
+            }
+            else if(msgReceive.equals("Restar"))
+            {
+                System.out.println("Restar");
+                enviarDatos("Restando");
+            }
+        }
+        catch(IOException exeptionES)
+        {            
+        }  
+    }
+            
+    
+    //Cerrar la conexion existente
+    public void closeConexion()
+    {
+        System.out.println("Cerrando conexion");
+        try
+        {
+            _salidaObj.close();
+            _entradaObj.close();
+            _clientConexion.close();
+        }
+        catch(IOException exeptionES)
+        {            
+        }            
+    }
+    
+    public void ejecutarServidor()
+    {
+        while(true)
+        {
+            try
+            {
+                esperarConexion();
+                establecerFlujos();
+                procesarConexion();
+            }
+            catch(IOException exeptionES)
+            {                
+            }
+            finally
+            {
+                closeConexion();                
+            }                
+        }            
     }
 }
