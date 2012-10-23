@@ -2,7 +2,7 @@ package servidors.o;
 
 import java.io.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 
 
@@ -12,12 +12,15 @@ import java.util.logging.Logger;
  */
 public class ServidorLogica {
     private File _Disco;
-    private FileWriter _escrituraDisco;
-    private FileReader _lecturaDisco;
+    private FileWriter _escrituraDisco;   
+    private BufferedReader _lecturaDisco;
     private String _fileDescriptor;
+    private LibreriaClases.EstructuraControlDisco _estructuraDisco;
+    private LibreriaClases _libreria;
  
    
     public ServidorLogica(){
+        _libreria = new LibreriaClases();
     }
     
     public String crearSA(String pnombrearchivo,long pnumerobloques,long ptamanobloque){
@@ -52,12 +55,33 @@ public class ServidorLogica {
     
     public void usarSA(String pnombrearchivo){
         _Disco = new File(pnombrearchivo+".txt");
+        String _lectura;
+        StringTokenizer _tokens;
+      
         try {
-            _lecturaDisco = new FileReader(_Disco);
-            _lecturaDisco.
+             FileReader _lecturadisco = new FileReader(_Disco);
+             _lecturaDisco = new BufferedReader(_lecturadisco);         
         
+    
         }catch (FileNotFoundException ex) {
             System.out.println(ex);
+            _fileDescriptor="Se produjo un error:" + ex;
+        }
+        try {
+            _lectura= _lecturaDisco.readLine();
+            _tokens = new StringTokenizer(_lectura,";");
+             if(_tokens.countTokens() > 1){
+            _tokens = new StringTokenizer(_tokens.nextToken(),"-");
+            if(_tokens.countTokens() == 4){
+            
+            _estructuraDisco = _libreria.new EstructuraControlDisco();
+            _estructuraDisco._nombreArchivo =pnombrearchivo;
+            _estructuraDisco._numeroBytes = Float.parseFloat(_tokens.nextToken());
+            _estructuraDisco._tamañoByte = Float.parseFloat(_tokens.nextToken());
+            _estructuraDisco._tamañoDisco = Float.parseFloat(_tokens.nextToken());
+            }}
+          
+        } catch (IOException ex) {
             _fileDescriptor="Se produjo un error:" + ex;
         }
     }

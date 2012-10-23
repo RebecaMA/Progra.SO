@@ -21,6 +21,7 @@ public class ServidorSO {
        ServidorLogica _servidor = new ServidorLogica();
        
        _servidor.crearSA("archivo",2, 1);
+       _servidor.usarSA("archivo");
         
     }
 }

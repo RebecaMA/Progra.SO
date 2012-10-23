@@ -10,12 +10,25 @@ package servidors.o;
  */
 public class LibreriaClases {
     
-    class EstructuraControlDisco{           
+    public LibreriaClases(){}
+    public class EstructuraControlDisco{           
+
+        public EstructuraControlDisco() {
+        }
     /*Area de control
      bloquesarchivo-tamañobloque-bloqueinicialdirectorio-tamañodirectoriobytes  
      */
+        
         String _nombreArchivo;
-        float _numeroBytes,_tamañoByte;
+        float _numeroBytes,_tamañoByte,_tamañoDisco;
+
+        public void setTamañoDisco(float _tamañoDisco) {
+            this._tamañoDisco = _tamañoDisco;
+        }
+
+        public float getTamañoDisco() {
+            return _tamañoDisco;
+        }
 
         public void setNombreArchivo(String _nombreArchivo) {
             this._nombreArchivo = _nombreArchivo;
