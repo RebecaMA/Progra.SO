@@ -1,7 +1,6 @@
 package servidors.o;
 
 import java.io.*;
-import java.util.logging.Level;
 import java.util.*;
 
 
@@ -17,10 +16,12 @@ public class ServidorLogica {
     private String _fileDescriptor;
     private LibreriaClases.EstructuraControlDisco _estructuraDisco;
     private LibreriaClases _libreria;
+    ArrayList<LibreriaClases.EstructuraControlDisco> _listaDiscos;
  
    
     public ServidorLogica(){
         _libreria = new LibreriaClases();
+        _listaDiscos = new ArrayList<LibreriaClases.EstructuraControlDisco>();
     }
     
     public String crearSA(String pnombrearchivo,long pnumerobloques,long ptamanobloque){
@@ -70,15 +71,17 @@ public class ServidorLogica {
         try {
             _lectura= _lecturaDisco.readLine();
             _tokens = new StringTokenizer(_lectura,";");
-             if(_tokens.countTokens() > 1){
+             if(_tokens.countTokens() >= 1){
             _tokens = new StringTokenizer(_tokens.nextToken(),"-");
-            if(_tokens.countTokens() == 4){
+            if(_tokens.countTokens() >= 3){
             
             _estructuraDisco = _libreria.new EstructuraControlDisco();
             _estructuraDisco._nombreArchivo =pnombrearchivo;
             _estructuraDisco._numeroBytes = Float.parseFloat(_tokens.nextToken());
             _estructuraDisco._tamañoByte = Float.parseFloat(_tokens.nextToken());
             _estructuraDisco._tamañoDisco = Float.parseFloat(_tokens.nextToken());
+            _listaDiscos.add(_estructuraDisco);
+            _fileDescriptor = ""+ (_listaDiscos.size()-1);
             }}
           
         } catch (IOException ex) {
