@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package SisArchivosServerSocket;
+package SocketServidor;
 
 //Imports
 
@@ -28,10 +28,7 @@ public class ServidorSocket {
     private ServerSocket _server;
     private Socket _clientConexion;
     
-    
-             
-    
-                 //Metodos
+            //Metodos
     
     //Crear el servidor
     
@@ -50,10 +47,10 @@ public class ServidorSocket {
     
     //Esperar a que llegue una conexion
     
-    private String esperarConexion()throws IOException
+    private void esperarConexion()throws IOException
     {
         _clientConexion = _server.accept();
-        return _clientConexion.getInetAddress().getHostName();                      
+        System.out.println(_clientConexion.getInetAddress().getHostName());                      
     }
     
     //Se establecen los flujos para la entrada y salida de datos
@@ -61,7 +58,8 @@ public class ServidorSocket {
     {
         _salidaObj = new ObjectOutputStream(_clientConexion.getOutputStream());
         _salidaObj.flush();        
-        _entradaObj = new ObjectInputStream(_clientConexion.getInputStream());       
+        _entradaObj = new ObjectInputStream(_clientConexion.getInputStream()); 
+         System.out.println("Flujos establecidos"); 
     }
     
     //Envio de datos al cliente
@@ -144,11 +142,7 @@ public class ServidorSocket {
             }
             catch(IOException exeptionES)
             {                
-            }
-            finally
-            {
-                closeConexion();                
-            }                
+            }                          
         }            
     }
 }

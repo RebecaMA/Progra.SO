@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package SisArchivosClientSocket;
+package SocketCliente;
 
 /**
  *
@@ -15,5 +15,11 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        ClienteSocket cliente = new ClienteSocket();
+        cliente.conectarServidor("127.0.0.1", 12345);
+        cliente.enviarDatos("Sumar");
+        cliente.ejecutarCliente();
+        
+        
     }
 }

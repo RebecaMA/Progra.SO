@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package SisArchivosServerSocket;
+package SocketServidor;
 
 /**
  *
@@ -15,9 +15,9 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        ServidorSocket newServer = new ServidorSocket();
-        System.out.println("Servidor Creado");
+        ServidorSocket newServer = new ServidorSocket();        
         newServer.crearServidor(12345, 100);
+        System.out.println("Servidor Creado");
         newServer.ejecutarServidor();       
     }
 }
