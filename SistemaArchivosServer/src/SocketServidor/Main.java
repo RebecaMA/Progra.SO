@@ -4,7 +4,7 @@
  */
 package SocketServidor;
 
-import SA.AccesoDatos;
+import SA.ServidorSA;
 
 /**
  *
@@ -20,8 +20,11 @@ public class Main {
         ServidorSocket newServer = new ServidorSocket();        
         newServer.crearServidor(12345, 100);
         System.out.println("Servidor Creado");
-        newServer.ejecutarServidor();       
+        newServer.ejecutarServidor();   
         
+        
+//        ServidorSA _s = new ServidorSA();
+//        _s.crearSA("prueba.txt",3, 100);
 
         
     }

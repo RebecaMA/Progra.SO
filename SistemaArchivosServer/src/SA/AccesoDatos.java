@@ -7,12 +7,15 @@ package SA;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import SA.Libreria.*;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.ObjectOutputStream;
+import java.util.StringTokenizer;
+
 
 /**
  *
@@ -22,14 +25,27 @@ public class AccesoDatos {
     
     private File _Disco;
     private File _Archivo;
-    private BufferedReader _lecturaDisco;
-   
-    private String _fileDescriptor;
     private ServidorSA _servidorSA;
     
     public AccesoDatos(){
-        _servidorSA = new ServidorSA();
+        
     }
+    
+    public String crearSA(EstructuraControlDisco pdisco){
+        String _fileDescriptor = "Se creo el disco con exito";
+        
+        try {
+            FileOutputStream fileOut =  new FileOutputStream(pdisco.getNombre());
+            ObjectOutputStream out =  new ObjectOutputStream(fileOut);
+            out.writeObject(pdisco);
+            out.close();
+            fileOut.close();
+        } catch (IOException ex) {
+            _fileDescriptor="Se produjo un error:" + ex;
+        }
+    return _fileDescriptor;
+   }
+
  
     
    
@@ -37,6 +53,7 @@ public class AccesoDatos {
     public String leerArchivo(int pinicio, int plongitud)
     {
         String _archivosleidos = null;
+        _servidorSA = new ServidorSA();
         byte[] _a = new byte[plongitud];
         try {
             RandomAccessFile _lectura = new RandomAccessFile(_servidorSA._estructuraDisco.getNombre(), "r");
@@ -76,6 +93,8 @@ public class AccesoDatos {
         }
         return _situacion;
     }
+
+   
     
 }
 

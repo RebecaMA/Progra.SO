@@ -4,13 +4,15 @@
  */
 package SA.Libreria;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
 
 /**
  *
  * @author Meza Schmidt
  */
-public class EstructuraControlDisco {
+public class EstructuraControlDisco implements Serializable {
     
     
     //Atributos
