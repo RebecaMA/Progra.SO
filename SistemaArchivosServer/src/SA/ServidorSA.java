@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package SA;
+import SA.Libreria.EstructuraControlDisco;
 import java.io.*;
 import java.util.*;
 
@@ -18,8 +19,9 @@ public class ServidorSA {
     private FileWriter _escrituraDisco;   
     private BufferedReader _lecturaDisco;
     private String _fileDescriptor;
-    private EstructuraControlDisco _estructuraDisco;
+    public EstructuraControlDisco _estructuraDisco;
     private ArrayList<ControlAcceso> estructuraControlAcceso;
+    
     
     
     
