@@ -10,11 +10,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import SA.Libreria.*;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -46,6 +50,28 @@ public class AccesoDatos {
     return _fileDescriptor;
    }
 
+    public EstructuraControlDisco usarSA(String pnombre)
+    {
+        EstructuraControlDisco _estructura = new EstructuraControlDisco();
+         try
+         {
+            FileInputStream fileIn =  new FileInputStream(pnombre);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            _estructura = (EstructuraControlDisco) in.readObject();
+            in.close();
+            fileIn.close();
+        }catch(IOException i)
+        {
+           System.out.println(i.toString());
+   
+        }catch(ClassNotFoundException c)
+        {
+           System.out.println(c.toString()); 
+        }
+         
+         return _estructura;
+      
+    }
  
     
    

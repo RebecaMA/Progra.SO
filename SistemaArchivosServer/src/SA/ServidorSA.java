@@ -31,7 +31,6 @@ public class ServidorSA {
     
     
     
-    
     public String crearSA(String pnombrearchivo,int pnumerobloques,int ptamanobloque){
         EstructuraControlDisco _estructura = new EstructuraControlDisco();
         _accesoDatos = new AccesoDatos();
@@ -44,6 +43,13 @@ public class ServidorSA {
         _accesoDatos.crearSA(_estructura);
        
         return _retorno;
+    }
+    
+    public String usarSA(String pnombre){
+        _accesoDatos = new AccesoDatos();
+        _estructuraDisco = _accesoDatos.usarSA(pnombre);
+        return  _estructuraDisco.getNombre() + _estructuraDisco.getNumBloques();
+    
     }
     
     

@@ -21,10 +21,11 @@ public class Main {
         newServer.crearServidor(12345, 100);
         System.out.println("Servidor Creado");
         newServer.ejecutarServidor();   
+//        
         
-        
-//        ServidorSA _s = new ServidorSA();
-//        _s.crearSA("prueba.txt",3, 100);
+//           ServidorSA _s = new ServidorSA();
+////        _s.crearSA("prueba.txt",3, 100);
+//           System.out.println(_s.usarSA("prueba.txt"));
 
         
     }
