@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package SA.Libreria;
+package Libreria;
 
 /**
  *
@@ -17,9 +17,8 @@ public class Archivo {
     private int _numBloques;
     private String _fechaModificacion; //DD/MM/AA
     
-    public Archivo(int pasa, String pnombre, int pespacioAsignado, int pbloqueInicio, int pnumBloques, String pfechaModificacion)
-    {
-        _asa = pasa;
+    public Archivo(String pnombre, int pespacioAsignado, int pbloqueInicio, int pnumBloques, String pfechaModificacion)
+    {        
         _nombre = pnombre;
         _espacioAsignado = pespacioAsignado;
         _bloqueInicio = pbloqueInicio;
@@ -28,20 +27,6 @@ public class Archivo {
     }
     
     
-    /**
-     * @return the asa
-     */
-    public int getAsa() {
-        return _asa;
-    }
-
-    /**
-     * @param asa the asa to set
-     */
-    public void setAsa(int asa) {
-        this._asa = asa;
-    }
-
     /**
      * @return the nombre
      */

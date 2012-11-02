@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package SA;
-import SA.Libreria.*;
+import Libreria.EstructuraControlDisco;
 import java.io.*;
 import java.util.*;
 
@@ -27,10 +27,7 @@ public class ServidorSA {
     {
         
     }
-    
-    
-    
-    
+        
     public String crearSA(String pnombrearchivo,int pnumerobloques,int ptamanobloque){
         EstructuraControlDisco _estructura = new EstructuraControlDisco();
         _accesoDatos = new AccesoDatos();
@@ -60,6 +57,7 @@ public class ServidorSA {
     
     public int crearArchivo(String pnombreArch, int ptamanoBytes)
     {
+        _estructuraDisco.crearEstructuraArchivo(pnombreArch, ptamanoBytes);
         return 1;
     }
     

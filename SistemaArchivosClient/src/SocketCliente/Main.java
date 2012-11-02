@@ -17,8 +17,8 @@ public class Main {
         // TODO code application logic here
         ClienteSocket cliente = new ClienteSocket();
         cliente.conectarServidor("127.0.0.1", 12345);
-        cliente.enviarDatos("Sumar");
-        cliente.ejecutarCliente();
+        //cliente.enviarDatos("Sumar");
+        cliente.ejecutarCliente("df", "1233453", "JAvi");
         
         
     }

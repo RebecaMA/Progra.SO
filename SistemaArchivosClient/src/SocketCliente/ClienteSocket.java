@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-
+import Libreria.Mensaje;
 
 
 /**
@@ -49,11 +49,11 @@ public class ClienteSocket {
     }
     
     //Envio de datos al cliente
-    public void enviarDatos(Object pobject)
+    public void enviarDatos(Mensaje pmensaje)
     {
         try
         {
-            _salidaObj.writeObject(pobject);
+            _salidaObj.writeObject(pmensaje);
             _salidaObj.flush();
             System.out.println("mensaje enviado");
         }
@@ -63,35 +63,83 @@ public class ClienteSocket {
     }
     
     //Se reciben los datos que el cliente envio
-    private Object recibirDatos() throws IOException
+    private Mensaje recibirDatos() throws IOException
     {
-        Object objetoRecibido = new Object();
+        Mensaje mensajeRecibido = new Mensaje();
         try
         {
-            objetoRecibido = _entradaObj.readObject();            
+            mensajeRecibido = (Mensaje) _entradaObj.readObject();            
         }
         catch(ClassNotFoundException exeptionNotClass)
         {            
         }      
-        return objetoRecibido;
+        return mensajeRecibido;
     }
     
     //Procesa cada una de las solicitudes que lleguen al socket
     private void procesarConexion() throws IOException
     {
-        String msgReceive;
+        Mensaje msgReceive;        
         try
         {
-            msgReceive = (String) recibirDatos();
+            msgReceive = recibirDatos();
             
-            if(msgReceive.equals("Sumando"))
+            if(msgReceive.getTipoMensaje().equals("df"))
             {
-                System.out.println("Sumando");                            
+                System.out.println(msgReceive.getMensaje());                
             }
-            else if(msgReceive.equals("Restando"))
+            else if(msgReceive.getTipoMensaje().equals("mount"))
             {
-                System.out.println("Restando");                
+                System.out.println(msgReceive.getMensaje());
             }
+            else if(msgReceive.getTipoMensaje().equals("ls"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("rm"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("open"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("read"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("write"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("repos"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("close"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("cat"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("importar"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("exportar"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            }
+            else if(msgReceive.getTipoMensaje().equals("salir"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            } 
+            else if(msgReceive.getTipoMensaje().equals("terminar"))
+            {
+                System.out.println(msgReceive.getMensaje());
+            } 
         }
         catch(IOException exeptionES)
         {            
@@ -114,12 +162,17 @@ public class ClienteSocket {
         }            
     }
     
-    public void ejecutarCliente()
+    public void ejecutarCliente(String ptipoMensaje, String pMensaje, String pusuario)
     {
-       
+        Mensaje sendMsg = new Mensaje();
+        sendMsg.setTipoMensaje(ptipoMensaje);
+        sendMsg.setMensaje(pMensaje);
+        sendMsg.setUsuario(pusuario);
+        
         try
-        {            
-            //establecerFlujos();
+        {
+            enviarDatos(sendMsg);
+            System.out.println("Mensaje Enviado");
             procesarConexion();
         }
         catch(IOException exeptionES)

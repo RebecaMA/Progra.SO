@@ -2,10 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package SA.Libreria;
+package Libreria;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -142,4 +145,76 @@ public class EstructuraControlDisco implements Serializable {
     public ArrayList<Boolean> getListaBloquesLibres() {
         return _listaBloquesLibres;
     }    
+    
+                                //Funcionalidades
+    
+    
+    
+    public void crearEstructuraArchivo(String pnombre, int pespacioBytes)
+    {
+        //numero de bloques q se le asignaron
+        int numBloques = (int) Math.floor(pespacioBytes /_tamanoBloque);
+        int bloqueInicioArch = findBloqueInicio(numBloques);
+        if(bloqueInicioArch != -1)
+        {
+            Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate());
+            _listaArchivos.add(estructuraArch);
+            _espacioUsado = _espacioUsado + numBloques;
+            setBloquesOcupados(bloqueInicioArch, numBloques);
+                        
+            //Crear estructura de control de accesos
+        }
+        else
+        {
+            //No hay espacio para guardar el archivo            
+        }
+    }
+                                    
+                            //Funcionalidades adicionales
+    
+    private String getDate()
+    {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	Date date = new Date();
+	return dateFormat.format(date);
+    }
+    
+    
+    //Encuentra el blque de inicio para un determinado numero de bloques a asignar
+    //Se debe recorrer toda la lista de bloques
+    private int findBloqueInicio(int pnumBloques)
+    {
+        int bloqueInicio = -1;        
+        for(int i = 0; i < _listaBloquesLibres.size(); i++)
+        {
+            if(_listaBloquesLibres.get(i) == true)
+            {
+                boolean hayEspacio = true;
+                for(int j = 1; j < pnumBloques; j++)
+                {
+                    if(_listaBloquesLibres.get(j + i) == false)
+                    {
+                        hayEspacio = false;
+                        break;                                                                        
+                    }
+                }
+                if(hayEspacio)
+                {
+                    bloqueInicio = i;
+                    break;
+                }                
+            }
+        }
+        return bloqueInicio;    
+    }
+    
+    //Cambia el estado de los bloques a ocupados, desd el bloque de inicio hasta pnumBloques - 1
+    private void setBloquesOcupados(int pbloqueInicio, int pnumBloques)
+    {
+        for(int i = pbloqueInicio; i < pnumBloques; i++)
+        {
+            _listaBloquesLibres.set(i, false);            
+        }
+    }
+    
 }
