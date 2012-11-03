@@ -15,10 +15,7 @@ public class ServidorSA {
     
     //Atributos
     
-    private File _Disco;
-    private FileWriter _escrituraDisco;   
-    private BufferedReader _lecturaDisco;
-    private String _fileDescriptor;
+  
     public EstructuraControlDisco _estructuraDisco;
     private ArrayList<ControlAcceso> estructuraControlAcceso;
     private AccesoDatos _accesoDatos;

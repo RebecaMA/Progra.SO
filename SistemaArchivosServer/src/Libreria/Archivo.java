@@ -16,6 +16,9 @@ public class Archivo {
     private int _bloqueInicio;
     private int _numBloques;
     private String _fechaModificacion; //DD/MM/AA
+    private int _posicionArchivo;
+
+  
     
     public Archivo(String pnombre, int pespacioAsignado, int pbloqueInicio, int pnumBloques, String pfechaModificacion)
     {        
@@ -24,6 +27,7 @@ public class Archivo {
         _bloqueInicio = pbloqueInicio;
         _numBloques = pnumBloques;
         _fechaModificacion = pfechaModificacion;
+        
     }
     
     
@@ -95,5 +99,13 @@ public class Archivo {
      */
     public void setFechaModificacion(String fechaModificacion) {
         this._fechaModificacion = fechaModificacion;
-    }       
+    }  
+    
+    public void setPosicionArchivo(int _posicionArchivo) {
+        this._posicionArchivo = _posicionArchivo;
+    }
+
+    public int getPosicionArchivo() {
+        return _posicionArchivo;
+    }
 }
