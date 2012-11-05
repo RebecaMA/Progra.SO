@@ -15,8 +15,9 @@ public class Archivo {
     private int _espacioAsignado; //Tamano en Bytes    
     private int _bloqueInicio;
     private int _numBloques;
+    private int _byteInicio; // Byte del disco en el que inicia el archivo
     private String _fechaModificacion; //DD/MM/AA
-
+    
   
     
     public Archivo(String pnombre, int pespacioAsignado, int pbloqueInicio, int pnumBloques, String pfechaModificacion)
@@ -100,7 +101,20 @@ public class Archivo {
      */
     public void setFechaModificacion(String fechaModificacion) {
         this._fechaModificacion = fechaModificacion;
-    }  
+    }
+    /**
+     * @param _byteInicio 
+     */
+       public void setByteInicio(int _byteInicio) {
+        this._byteInicio = _byteInicio;
+    }
+       /**
+        * 
+        * @return _byte de Inicio
+        */
+    public int getByteInicio() {
+        return _byteInicio;
+    }
     
   
 }
