@@ -4,6 +4,7 @@
  */
 package SocketServidor;
 
+import SA.AccesoDatos;
 import SA.ServidorSA;
 
 /**
@@ -21,11 +22,17 @@ public class Main {
         newServer.crearServidor(12345, 100);
         System.out.println("Servidor Creado");
         newServer.ejecutarServidor();   
-//        
+        
         
 //           ServidorSA _s = new ServidorSA();
 ////        _s.crearSA("prueba.txt",3, 100);
 //           System.out.println(_s.usarSA("prueba.txt"));
+        
+//        AccesoDatos acceso = new AccesoDatos();
+//       acceso.escribirArchivo("Hola",500);
+//       System.out.println(acceso.leerArchivo(499, 4));
+//         acceso.escribirArchivo("ADIOS",600);
+//       System.out.println(acceso.leerArchivo(500, 250));
 
         
     }

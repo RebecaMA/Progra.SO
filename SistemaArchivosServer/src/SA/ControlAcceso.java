@@ -24,6 +24,9 @@ public class ControlAcceso {
         _enUso = penUso;
         _posicionPuntero = 0;
     }
+    
+
+            
 
     /**
      * @return the nombreUsuario

@@ -16,7 +16,6 @@ public class Archivo {
     private int _bloqueInicio;
     private int _numBloques;
     private String _fechaModificacion; //DD/MM/AA
-    private int _posicionArchivo;
 
   
     
@@ -29,6 +28,8 @@ public class Archivo {
         _fechaModificacion = pfechaModificacion;
         
     }
+    
+   
     
     
     /**
@@ -101,11 +102,5 @@ public class Archivo {
         this._fechaModificacion = fechaModificacion;
     }  
     
-    public void setPosicionArchivo(int _posicionArchivo) {
-        this._posicionArchivo = _posicionArchivo;
-    }
-
-    public int getPosicionArchivo() {
-        return _posicionArchivo;
-    }
+  
 }
