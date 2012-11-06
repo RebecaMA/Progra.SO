@@ -8,17 +8,20 @@ package Libreria;
  *
  * @author Meza Schmidt
  */
-public class Archivo {
+public class Archivo {    
     
-    private int _asa;
     private String _nombre;
     private int _espacioAsignado; //Tamano en Bytes    
     private int _bloqueInicio;
     private int _numBloques;
     private int _byteInicio; // Byte del disco en el que inicia el archivo
     private String _fechaModificacion; //DD/MM/AA
+<<<<<<< HEAD
     
   
+=======
+      
+>>>>>>> Operaciones hechas
     
     public Archivo(String pnombre, int pespacioAsignado, int pbloqueInicio, int pnumBloques, String pfechaModificacion)
     {        
@@ -101,6 +104,7 @@ public class Archivo {
      */
     public void setFechaModificacion(String fechaModificacion) {
         this._fechaModificacion = fechaModificacion;
+<<<<<<< HEAD
     }
     /**
      * @param _byteInicio 
@@ -117,4 +121,8 @@ public class Archivo {
     }
     
   
+=======
+    }
+    
+>>>>>>> Operaciones hechas
 }
