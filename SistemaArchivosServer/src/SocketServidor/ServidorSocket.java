@@ -19,8 +19,8 @@ import java.net.Socket;
 public class ServidorSocket {
     
             //Atributos
-    private ServerSocket _server;    
-    
+    private ServerSocket _server; 
+        
             //Metodos
     
     //Crear el servidor

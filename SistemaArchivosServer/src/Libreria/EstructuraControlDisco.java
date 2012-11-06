@@ -146,26 +146,39 @@ public class EstructuraControlDisco implements Serializable {
         return _listaBloquesLibres;
     }    
     
+    public void setListaArchivos() {
+        this._listaArchivos = new ArrayList<Archivo>();
+    }
+
+    public void setListaBloquesLibres(int pnumBloques) {
+        _listaBloquesLibres = new ArrayList<Boolean>();
+        for(int i = 0; i < pnumBloques; i++)
+        {
+            _listaBloquesLibres.add(true);
+        }
+        
+    }
+    
                                 //Funcionalidades
     
     
     
-    public void crearEstructuraArchivo(String pnombre, int pespacioBytes)
+    public boolean crearEstructuraArchivo(String pnombre, int pespacioBytes)
     {
-        //numero de bloques q se le asignaron
-        int numBloques = (int) Math.floor(pespacioBytes /_tamanoBloque);
+        //numero de bloques q se le asignaron        
+        int numBloques = (int) Math.ceil((double)pespacioBytes / (double)_tamanoBloque);
         int bloqueInicioArch = findBloqueInicio(numBloques);
         if(bloqueInicioArch != -1)
-        {
-            Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate());
-            _listaArchivos.add(estructuraArch);
-            _espacioUsado = _espacioUsado + numBloques;
+        {            
+            Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate());            
+            _listaArchivos.add(estructuraArch);            
             setBloquesOcupados(bloqueInicioArch, numBloques);
-                        
-            //Crear estructura de control de accesos
+            _espacioUsado = _espacioUsado + numBloques;      
+            return true;            
         }
         else
         {
+            return false;
             //No hay espacio para guardar el archivo            
         }
     }
@@ -185,14 +198,19 @@ public class EstructuraControlDisco implements Serializable {
     private int findBloqueInicio(int pnumBloques)
     {
         int bloqueInicio = -1;        
-        for(int i = 0; i < _listaBloquesLibres.size(); i++)
+        for(int i = _bloqueInicio; i < _listaBloquesLibres.size(); i++)
         {
             if(_listaBloquesLibres.get(i) == true)
             {
                 boolean hayEspacio = true;
                 for(int j = 1; j < pnumBloques; j++)
                 {
-                    if(_listaBloquesLibres.get(j + i) == false)
+                    if((j + i) >= _listaBloquesLibres.size())
+                    {
+                        hayEspacio = false;
+                        break;                                                                        
+                    }
+                    else if( _listaBloquesLibres.get(j + i) == false)
                     {
                         hayEspacio = false;
                         break;                                                                        
@@ -211,10 +229,24 @@ public class EstructuraControlDisco implements Serializable {
     //Cambia el estado de los bloques a ocupados, desd el bloque de inicio hasta pnumBloques - 1
     private void setBloquesOcupados(int pbloqueInicio, int pnumBloques)
     {
-        for(int i = pbloqueInicio; i < pnumBloques; i++)
+        for(int i = 0; i < pnumBloques; i++)
         {
-            _listaBloquesLibres.set(i, false);            
+            _listaBloquesLibres.set(pbloqueInicio + i, false);            
         }
     }
     
+    //Buscar nombres en conflicto
+    public boolean findArchivo(String pnombre)
+    {
+        boolean conflicto = false;
+        for(int i = 0; i < _listaArchivos.size(); i++)
+        {
+            if(_listaArchivos.get(i).getNombre().equals(pnombre))
+            {                
+                conflicto = true;
+                break;
+            }
+        }        
+        return conflicto;
+    }
 }
