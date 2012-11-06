@@ -4,11 +4,13 @@
  */
 package Libreria;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Meza Schmidt
  */
-public class Archivo {    
+public class Archivo  implements Serializable{    
     
     private String _nombre;
     private int _espacioAsignado; //Tamano en Bytes    

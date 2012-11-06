@@ -24,6 +24,7 @@ public class ServidorSA {
     int _tamañoBloqueControl; // Tiene el tamaño del bloque de inicio pongamoslo de 500 para empezar
     private int _numasa;
         
+    //Inicialización de Servidor SA
     public ServidorSA()
     {
         _tamañoBloqueControl = 500;
@@ -31,6 +32,7 @@ public class ServidorSA {
         _estructuraControlAcceso= new ArrayList<ControlAcceso>(50);
     }
         
+    // Crear Sistema de Archivos
     public String crearSA(String pnombrearchivo,int pnumerobloques,int ptamanobloque){
         EstructuraControlDisco _estructura = new EstructuraControlDisco();
         setAccesoDatos(new AccesoDatos());
@@ -46,6 +48,7 @@ public class ServidorSA {
         return _retorno;
     }
     
+    // Usar disco con el nombre.
     public String usarSA(String pnombre){
         setAccesoDatos(new AccesoDatos());
         setEstructuraDisco(getAccesoDatos().usarSA(pnombre));
@@ -56,9 +59,19 @@ public class ServidorSA {
     
     public String deshablilitarSA()
     {
+       // Verificar que no hayan mas clientes
+        // Hay q borrar lo q esta en control de acceso tambn
+        getAccesoDatos().crearSA(getEstructuraDisco());
+        setEstructuraDisco(null);
+        getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());
+        
+
+        
         return "Mensaje";
     }
     
+    
+    // Crear un archivo
     public int crearArchivo(String pnombreUsuario, String pnombreArch, int ptamanoBytes)
     {
         if(!_estructuraDisco.findArchivo(pnombreArch))
@@ -83,6 +96,7 @@ public class ServidorSA {
         }        
     }
     
+    // Abre un archivo
     public int abrirArchivo(String pnombreUsuario, String pnombreArch)
     {
         if(_estructuraDisco.findArchivo(pnombreArch))
@@ -107,7 +121,7 @@ public class ServidorSA {
     }
     
     
-    
+    // Cierra el archivo
     public void cerrarArchivo(int pasa)
     {        
         for(int i = 0; i < _estructuraControlAcceso.size(); i++)
@@ -120,6 +134,7 @@ public class ServidorSA {
         }               
     }
     
+    // Borra el archivo
     public int borrarArchivo(String pnombreArch)
     {
         if(_estructuraDisco.findArchivo(pnombreArch))
@@ -151,7 +166,7 @@ public class ServidorSA {
         }       
     }
     
-    
+    //Lee el archivo
     public String leerArchivo(String pasa, int pnumBytes)
     { 
         String retorno;
@@ -183,17 +198,13 @@ public class ServidorSA {
        int index, retorno,puntero;
        ControlAcceso  _controlAcceso;
        Archivo _archivo;
-       Date fecha;
+       Calendar fecha;
        
        index = buscarArchivo(pasa); 
        _controlAcceso = _estructuraControlAcceso.get(index);
        _archivo = _estructuraDisco.getListaArchivos().get(index);
        _accesoDatos = new AccesoDatos();
-       fecha = new Date();
-       
-       // Aqui supongo q espacio asignado es el numero total de bytes
-       // Nc si ese esenUso es solo para que el usuario lo use o yo tambien lo tengo q ver aqui
-       
+       fecha = new GregorianCalendar();       
        puntero = _controlAcceso.getPosicionPuntero()+ _archivo.getByteInicio();
        if((puntero +pdata.length()) > (_archivo.getByteInicio() + _archivo.getEspacioAsignado()))
        {
@@ -202,15 +213,129 @@ public class ServidorSA {
        else 
        {
            retorno = _accesoDatos.escribirArchivo(pdata, puntero,_estructuraDisco);
-           _archivo.setFechaModificacion(fecha.getDay()+"/"+fecha.getMonth()+"/" + fecha.getYear());
-           _estructuraDisco.getListaArchivos().set(index, _archivo);
+           _archivo.setFechaModificacion(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/" + fecha.get(Calendar.YEAR));
+           getEstructuraDisco().getListaArchivos().set(index, _archivo);
        }
         
         return retorno; //bytes realmente escritos
-    }   
+    }
+    
+
+    // Reposicionar Archivo
+    public int reposicionarArchivo(String pasa,String pmodo,int pnumeroBytes)
+    {
+        int index,posicion;
+        
+        
+        index = buscarArchivo(pasa);
+        Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
+        ControlAcceso _acceso = _estructuraControlAcceso.get(index);
+        
+        posicion = 0;
+        
+        if(pmodo.equals("act")){
+            posicion = _acceso.getPosicionPuntero() + pnumeroBytes;
+        }else if(pmodo.equals("ini")){
+            posicion = pnumeroBytes;
+        
+        }else if(pmodo.equals("fin")){
+            posicion = _archivo.getEspacioAsignado() - pnumeroBytes;
+        } 
+        
+        if(posicion < 0) {
+            posicion = 0;
+        }else if(posicion > _archivo.getEspacioAsignado()){
+            posicion = _archivo.getEspacioAsignado();
+        }
+        
+        _acceso.setPosicionPuntero(posicion);
+        getEstructuraControlAcceso().set(index, _acceso);
+        return posicion;
+    
+    
+    }
+
+    // LS [Archivo]
+    
+    public String LSarchivo(String pnombrearchivo){
+         int index;
+         String retorno;
+         index = buscarArchivo(pnombrearchivo);
+         Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
+         
+         retorno = "Nombre Archivo: " + _archivo.getNombre() + "\n";
+         retorno += "Tamaño en Bytes: " + _archivo.getEspacioAsignado() + "\n";
+         retorno += "Bloque Inicial: " + _archivo.getBloqueInicio() +  "\n";
+         retorno += "Longitud en bloques: " + _archivo.getNumBloques() + "\n";
+         retorno += "Fecha Modificacion: " + _archivo.getFechaModificacion() + "\n";
+         
+         if(findArchivoAbierto(pnombrearchivo)){
+        ControlAcceso _acceso = _estructuraControlAcceso.get(index);
+           retorno += "Archivo Abierto por " +  _acceso.getNombreUsuario() + "\n";
+         }  
+        return retorno; 
+    }
+    
+        // LS [Archivo]
+    
+    public String LS(){
+         String retorno = "";
+         ArrayList<Archivo> _lista = _estructuraDisco.getListaArchivos();
+         for(int i=0;i<_lista.size();i++)
+         {
+         
+         Archivo _archivo = _lista.get(i);
+         retorno += "*** ***" + "\n";
+         retorno += "Nombre Archivo: " + _archivo.getNombre() + "\n";
+         retorno += "Tamaño en Bytes: " + _archivo.getEspacioAsignado() + "\n";
+         retorno += "Bloque Inicial: " + _archivo.getBloqueInicio() +  "\n";
+         retorno += "Longitud en bloques: " + _archivo.getNumBloques() + "\n";
+         retorno += "Fecha Modificacion: " + _archivo.getFechaModificacion() + "\n";
+         
+         if(findArchivoAbierto(_archivo.getNombre())){
+        ControlAcceso _acceso = getEstructuraControlAcceso().get(i);
+           retorno += "Archivo Abierto por: " +  _acceso.getNombreUsuario() + "\n";
+         }  
+         }
+        return retorno; 
+    }
 
     
     
+                    //Funcionalidades adicionales
+    
+    private boolean findArchivoAbierto(String pnombreUsuario, String pnombreArch)
+    {
+        boolean conflicto = false;
+        for(int i = 0; i < _estructuraControlAcceso.size(); i++)
+        {
+            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch) && !_estructuraControlAcceso.get(i).getNombreUsuario().equals(pnombreUsuario))
+            {                
+                conflicto = true;
+                break;
+            }
+        }        
+        return conflicto;
+    }
+    
+
+    
+     private boolean findArchivoAbierto(String pnombreArch)
+    {
+        boolean conflicto = false;
+        for(int i = 0; i < _estructuraControlAcceso.size(); i++)
+        {
+            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch))
+            {                
+                conflicto = true;
+                break;
+            }
+        }        
+        return conflicto;
+    }
+     
+     
+         
     public int buscarArchivo(String pasa)
     {
         int _contador = 0;
@@ -229,8 +354,11 @@ public class ServidorSA {
         
         return _contador;
     }
-
-    /**
+     
+     
+     
+     // Get y Setters
+      /**
      * @return the _estructuraControlAcceso
      */
     public ArrayList<ControlAcceso> getEstructuraControlAcceso() {
@@ -270,37 +398,6 @@ public class ServidorSA {
      */
     public void setEstructuraDisco(EstructuraControlDisco estructuraDisco) {
         this._estructuraDisco = estructuraDisco;
-    }
-    
-    
-                    //Funcionalidades adicionales
-    
-    private boolean findArchivoAbierto(String pnombreUsuario, String pnombreArch)
-    {
-        boolean conflicto = false;
-        for(int i = 0; i < _estructuraControlAcceso.size(); i++)
-        {
-            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch) && !_estructuraControlAcceso.get(i).getNombreUsuario().equals(pnombreUsuario))
-            {                
-                conflicto = true;
-                break;
-            }
-        }        
-        return conflicto;
-    }
-    
-     private boolean findArchivoAbierto(String pnombreArch)
-    {
-        boolean conflicto = false;
-        for(int i = 0; i < _estructuraControlAcceso.size(); i++)
-        {
-            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch))
-            {                
-                conflicto = true;
-                break;
-            }
-        }        
-        return conflicto;
     }
 
 }

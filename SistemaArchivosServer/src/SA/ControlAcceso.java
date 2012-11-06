@@ -27,6 +27,8 @@ public class ControlAcceso {
         _posicionPuntero = 0;
     }
     
+  
+    
 
             
 

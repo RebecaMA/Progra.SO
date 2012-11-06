@@ -67,11 +67,19 @@ public class Main {
         server.usarSA("DiscoRebe.txt");
          System.out.println(server.crearArchivo("Rebe", "ArchivoRebe",150));
          System.out.println(server.crearArchivo("Rebe","Archivo Rebe 2",50));
-         System.out.println(server.abrirArchivo("Rebe", "ArchivoRebe")+"abrir archivo");
+       //  System.out.println(server.abrirArchivo("Rebe", "ArchivoRebe")+"abrir archivo");
          System.out.println( server.escribirArchivo("ArchivoRebe", "HOLAS"));
          System.out.println(server.leerArchivo("ArchivoRebe",6));
          System.out.println( server.escribirArchivo("Archivo Rebe 2", "HOLAadios"));
          System.out.println(server.leerArchivo("Archivo Rebe 2",10));
+         System.out.println(server.reposicionarArchivo("ArchivoRebe", "ini",100));
+          System.out.println(server.reposicionarArchivo("ArchivoRebe", "act",20));
+         // System.out.println(server.LSarchivo("ArchivoRebe"));
+          //System.out.println(server.LS());
+          server.deshablilitarSA();
+          server.usarSA("DiscoRebe.txt");
+          System.out.println(server.LS());
+       
 
          
 
