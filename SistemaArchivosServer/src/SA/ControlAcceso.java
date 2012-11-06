@@ -15,7 +15,6 @@ public class ControlAcceso {
     private int _asa;
     private String _nombreArch;
     private String _nombreUsuario;
-    private boolean _enUso;
     private int _posicionPuntero; //Donde se ubica el puntero dentro del archivo
     
     
@@ -25,7 +24,6 @@ public class ControlAcceso {
         _asa = pasa;        
         _nombreUsuario = pnombreUsuario;
         _nombreArch = pnombreArch;
-        _enUso = true;
         _posicionPuntero = 0;
     }
     
@@ -44,20 +42,6 @@ public class ControlAcceso {
      */
     public void setNombreUsuario(String nombreUsuario) {
         this._nombreUsuario = nombreUsuario;
-    }
-
-    /**
-     * @return the enUso
-     */
-    public boolean isEnUso() {
-        return _enUso;
-    }
-
-    /**
-     * @param enUso the enUso to set
-     */
-    public void setEnUso(boolean enUso) {
-        this._enUso = enUso;
     }
 
     /**

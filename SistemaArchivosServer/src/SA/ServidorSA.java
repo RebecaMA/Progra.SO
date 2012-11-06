@@ -17,26 +17,18 @@ public class ServidorSA {
     //Atributos
     
   
-<<<<<<< HEAD
+
     public EstructuraControlDisco _estructuraDisco;
     private ArrayList<ControlAcceso> _estructuraControlAcceso;
     private AccesoDatos _accesoDatos;
     int _tamañoBloqueControl; // Tiene el tamaño del bloque de inicio pongamoslo de 500 para empezar
-    
+    private int _numasa;
+        
     public ServidorSA()
     {
         _tamañoBloqueControl = 500;
-=======
-    private EstructuraControlDisco _estructuraDisco;
-    private ArrayList<ControlAcceso> _estructuraControlAcceso;
-    private AccesoDatos _accesoDatos;
-    private int _numasa;
-    
-    public ServidorSA()
-    {
         _numasa = 0;
         _estructuraControlAcceso= new ArrayList<ControlAcceso>(50);
->>>>>>> Operaciones hechas
     }
         
     public String crearSA(String pnombrearchivo,int pnumerobloques,int ptamanobloque){
@@ -182,7 +174,7 @@ public class ServidorSA {
         
         return retorno; //bytes realmente escritos
     }   
-<<<<<<< HEAD
+
     
     
     public int buscarArchivo(String pasa)
@@ -203,7 +195,6 @@ public class ServidorSA {
         
         return _contador;
     }
-=======
 
     /**
      * @return the _estructuraControlAcceso
@@ -264,5 +255,4 @@ public class ServidorSA {
         return conflicto;
     }
 
->>>>>>> Operaciones hechas
 }

@@ -4,12 +4,12 @@
  */
 package SocketServidor;
 
-<<<<<<< HEAD
+
 import SA.AccesoDatos;
-=======
+
 import Libreria.EstructuraControlDisco;
 import SA.ControlAcceso;
->>>>>>> Operaciones hechas
+
 import SA.ServidorSA;
 import java.util.ArrayList;
 
@@ -28,7 +28,6 @@ public class Main {
         newServer.crearServidor(12345, 100);
         System.out.println("Servidor Creado");
         newServer.ejecutarServidor();   
-<<<<<<< HEAD
         
         
 //           ServidorSA _s = new ServidorSA();
@@ -63,7 +62,6 @@ public class Main {
         //System.out.println(server.crearArchivo("Javi", "Test.txt", 64));
         //double numBloques =  Math.ceil(9.0 / 4.0);
         //System.out.println(numBloques);
->>>>>>> Operaciones hechas
         
     }
 }
