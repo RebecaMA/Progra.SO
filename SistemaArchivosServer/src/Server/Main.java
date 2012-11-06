@@ -8,7 +8,7 @@
 package Server;
 
 
-import SA.AccesoDatos;
+import SA.*;
 
 /**
  *
@@ -19,7 +19,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AccesoDatos _acceso = new AccesoDatos();
+        
+        ServidorSA _servidorSA = new ServidorSA();
         
         
         

@@ -76,17 +76,16 @@ public class AccesoDatos {
     
    
     // Para leer en un archivo, no en el archivo de disco sino uno  dentro del disco
-    public String leerArchivo(int pinicio, int plongitud)
+    public String leerArchivo(int pinicio, int plongitud,EstructuraControlDisco _estructura)
     {
         String _archivosleidos = null;
-        _servidorSA = new ServidorSA();
         byte[] _a = new byte[plongitud];
         try {
 
            // RandomAccessFile _lectura = new RandomAccessFile(_servidorSA._estructuraDisco.getNombre(), "r");
               //RandomAccessFile _lectura = new RandomAccessFile("prueba.txt","rw");
 
-            RandomAccessFile _lectura = new RandomAccessFile(_servidorSA.getEstructuraDisco().getNombre(), "r");
+            RandomAccessFile _lectura = new RandomAccessFile(_estructura.getNombre(), "r");
 
             try {
                 _lectura.seek(pinicio);
@@ -106,7 +105,7 @@ public class AccesoDatos {
     
     // Este sirve para escribir en el archivo, lo hace sobre el disco seleccionado
     // Retorna -1 si algo no salio bien 
-    public int escribirArchivo(String pescribir, int pinicio)   
+    public int escribirArchivo(String pescribir, int pinicio,EstructuraControlDisco _estructura)   
     {
         int _situacion = 0;
         try {
@@ -114,7 +113,7 @@ public class AccesoDatos {
           //  RandomAccessFile _escritura = new RandomAccessFile(_servidorSA._estructuraDisco.getNombre(),"rw");
             //RandomAccessFile _escritura = new RandomAccessFile("prueba.txt","rw");
 
-            RandomAccessFile _escritura = new RandomAccessFile(_servidorSA.getEstructuraDisco().getNombre(),"rw");
+            RandomAccessFile _escritura = new RandomAccessFile(_estructura.getNombre(),"rw");
 
             try {
                 _escritura.seek(pinicio);

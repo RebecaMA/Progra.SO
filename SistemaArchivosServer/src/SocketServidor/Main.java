@@ -48,20 +48,33 @@ public class Main {
 //           System.out.println(_s.usarSA("prueba.txt"));
         ServidorSA server = new ServidorSA();        
         //server.setEstructuraControlAcceso(listaAcceso);
-        server.setEstructuraDisco(new EstructuraControlDisco());
-        server.getEstructuraDisco().setNumBloques(10);
-        server.getEstructuraDisco().setBloqueInicio(5);
-        server.getEstructuraDisco().setTamanoBloque(32);
-        server.getEstructuraDisco().setListaArchivos();
-        server.getEstructuraDisco().setListaBloquesLibres(10);
-        System.out.println(server.crearArchivo("Javi", "Test.txt", 64));
-        System.out.println(server.crearArchivo("Javi", "Test2.txt", 64));
-        System.out.println(server.crearArchivo("Javi", "Test3.txt", 32));
-        server.cerrarArchivo(1);        
-        System.out.println(server.abrirArchivo("Javi", "Test.txt"));
+//        server.setEstructuraDisco(new EstructuraControlDisco());
+//        server.getEstructuraDisco().setNumBloques(10);
+//        server.getEstructuraDisco().setBloqueInicio(5);
+//        server.getEstructuraDisco().setTamanoBloque(32);
+//        server.getEstructuraDisco().setListaArchivos();
+//        server.getEstructuraDisco().setListaBloquesLibres(10);
+//        System.out.println(server.crearArchivo("Javi", "Test.txt", 64));
+//        System.out.println(server.crearArchivo("Javi", "Test2.txt", 64));
+//        System.out.println(server.crearArchivo("Javi", "Test3.txt", 32));
+//        server.cerrarArchivo(1);        
+//        System.out.println(server.abrirArchivo("Javi", "Test.txt"));
         //System.out.println(server.crearArchivo("Javi", "Test.txt", 64));
         //double numBloques =  Math.ceil(9.0 / 4.0);
         //System.out.println(numBloques);
+        
+        server.crearSA("DiscoRebe.txt",100,100);
+        server.usarSA("DiscoRebe.txt");
+         System.out.println(server.crearArchivo("Rebe", "ArchivoRebe",150));
+         System.out.println(server.crearArchivo("Rebe","Archivo Rebe 2",50));
+         System.out.println(server.abrirArchivo("Rebe", "ArchivoRebe")+"abrir archivo");
+         System.out.println( server.escribirArchivo("ArchivoRebe", "HOLAS"));
+         System.out.println(server.leerArchivo("ArchivoRebe",6));
+         System.out.println( server.escribirArchivo("Archivo Rebe 2", "HOLAadios"));
+         System.out.println(server.leerArchivo("Archivo Rebe 2",10));
+
+         
+
         
     }
 }

@@ -32,6 +32,11 @@ public class EstructuraControlDisco implements Serializable {
     private ArrayList<Boolean> _listaBloquesLibres;
 
     
+    public EstructuraControlDisco()
+    {
+        _listaArchivos = new ArrayList<Archivo>();
+         _listaBloquesLibres = new ArrayList<Boolean>();
+    }
     //Setters y Getters
 
     /**
@@ -170,7 +175,8 @@ public class EstructuraControlDisco implements Serializable {
         int bloqueInicioArch = findBloqueInicio(numBloques);
         if(bloqueInicioArch != -1)
         {            
-            Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate());            
+            Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate()); 
+            estructuraArch.setByteInicio((bloqueInicioArch * _tamanoBloque) + 500);
             _listaArchivos.add(estructuraArch);            
             setBloquesOcupados(bloqueInicioArch, numBloques);
             _espacioUsado = _espacioUsado + numBloques;      

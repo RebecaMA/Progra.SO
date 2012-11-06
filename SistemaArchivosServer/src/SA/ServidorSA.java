@@ -39,6 +39,7 @@ public class ServidorSA {
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
         _estructura.setTamanoAreaControl(ptamanobloque*pnumerobloques);
+        _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
        
@@ -122,9 +123,9 @@ public class ServidorSA {
     public String leerArchivo(String pasa, int pnumBytes)
     { 
         String retorno;
-        int index,finalizacionArchivo;
+        int index,finalizacionArchivo,puntero;
         ControlAcceso  _controlAcceso;
-        Archivo _archivo;;
+        Archivo _archivo;
         
          index = buscarArchivo(pasa); 
        _controlAcceso = _estructuraControlAcceso.get(index);
@@ -132,14 +133,14 @@ public class ServidorSA {
        _accesoDatos = new AccesoDatos();
        
        finalizacionArchivo = _archivo.getBloqueInicio() * _estructuraDisco.getTamanoBloque() + _archivo.getEspacioAsignado() + _tamañoBloqueControl;
-       
-       if((_controlAcceso.getPosicionPuntero() + pnumBytes) > finalizacionArchivo)
+       puntero = _controlAcceso.getPosicionPuntero()+ _archivo.getByteInicio();
+       if((puntero + pnumBytes) > finalizacionArchivo)
        {
             retorno = "Indices fuera del archivo";
        }
        else 
        {
-          retorno = _accesoDatos.leerArchivo(_controlAcceso.getPosicionPuntero(), pnumBytes);
+          retorno = _accesoDatos.leerArchivo(puntero, pnumBytes,_estructuraDisco);
        }
         return retorno;
     }
@@ -147,7 +148,7 @@ public class ServidorSA {
     // Escribe el archivo, retorno el numero de bytes escritos
     public int escribirArchivo(String pasa, String pdata)
     {        
-       int index, retorno,bytesInicio;
+       int index, retorno,puntero;
        ControlAcceso  _controlAcceso;
        Archivo _archivo;
        Date fecha;
@@ -160,14 +161,15 @@ public class ServidorSA {
        
        // Aqui supongo q espacio asignado es el numero total de bytes
        // Nc si ese esenUso es solo para que el usuario lo use o yo tambien lo tengo q ver aqui
-       bytesInicio = _archivo.getBloqueInicio() * _estructuraDisco.getTamanoBloque() + _tamañoBloqueControl;
-       if((_controlAcceso.getPosicionPuntero()+pdata.length()) > (bytesInicio + _archivo.getEspacioAsignado()))
+       
+       puntero = _controlAcceso.getPosicionPuntero()+ _archivo.getByteInicio();
+       if((puntero +pdata.length()) > (_archivo.getByteInicio() + _archivo.getEspacioAsignado()))
        {
            retorno = 0;
        }
        else 
        {
-           retorno = _accesoDatos.escribirArchivo(pdata, _controlAcceso.getPosicionPuntero());
+           retorno = _accesoDatos.escribirArchivo(pdata, puntero,_estructuraDisco);
            _archivo.setFechaModificacion(fecha.getDay()+"/"+fecha.getMonth()+"/" + fecha.getYear());
            _estructuraDisco.getListaArchivos().set(index, _archivo);
        }
