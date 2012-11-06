@@ -88,7 +88,7 @@ public class ServidorSA {
         if(_estructuraDisco.findArchivo(pnombreArch))
         {
             System.out.println("Archivo Si existe");
-            if(!findArchivoAbierto(pnombreArch))
+            if(!findArchivoAbierto(pnombreUsuario, pnombreArch))
             {
                 _numasa = _numasa + 1;
                 ControlAcceso archivo = new ControlAcceso(_numasa, pnombreUsuario, pnombreArch);
@@ -119,6 +119,38 @@ public class ServidorSA {
             }
         }               
     }
+    
+    public int borrarArchivo(String pnombreArch)
+    {
+        if(_estructuraDisco.findArchivo(pnombreArch))
+        {
+            System.out.println("Archivo Si existe");
+            if(!findArchivoAbierto(pnombreArch))
+            {
+                for(int i = 0; i < _estructuraDisco.getListaArchivos().size(); i++)
+                {
+                    if( _estructuraDisco.getListaArchivos().get(i).getNombre().equals(pnombreArch))
+                    {
+                        _estructuraDisco.setEspacioUsado(_estructuraDisco.getEspacioUsado() -_estructuraDisco.getListaArchivos().get(i).getNumBloques());
+                        _estructuraDisco.setBloquesLibres(_estructuraDisco.getListaArchivos().get(i).getBloqueInicio(), _estructuraDisco.getListaArchivos().get(i).getNumBloques());
+                        _estructuraDisco.getListaArchivos().remove(i);                
+                        break;
+                    }
+                    
+                }  
+                return 1;
+            }
+            else 
+            {
+                return -2;
+            }           
+        }
+        else
+        {
+            return -1;
+        }       
+    }
+    
     
     public String leerArchivo(String pasa, int pnumBytes)
     { 
@@ -243,12 +275,26 @@ public class ServidorSA {
     
                     //Funcionalidades adicionales
     
-    private boolean findArchivoAbierto(String pnombre)
+    private boolean findArchivoAbierto(String pnombreUsuario, String pnombreArch)
     {
         boolean conflicto = false;
         for(int i = 0; i < _estructuraControlAcceso.size(); i++)
         {
-            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombre))
+            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch) && !_estructuraControlAcceso.get(i).getNombreUsuario().equals(pnombreUsuario))
+            {                
+                conflicto = true;
+                break;
+            }
+        }        
+        return conflicto;
+    }
+    
+     private boolean findArchivoAbierto(String pnombreArch)
+    {
+        boolean conflicto = false;
+        for(int i = 0; i < _estructuraControlAcceso.size(); i++)
+        {
+            if(_estructuraControlAcceso.get(i).getNombreArch().equals(pnombreArch))
             {                
                 conflicto = true;
                 break;

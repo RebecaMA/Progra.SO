@@ -241,6 +241,15 @@ public class EstructuraControlDisco implements Serializable {
         }
     }
     
+    //Cambia el estado de los bloques a ocupados, desd el bloque de inicio hasta pnumBloques - 1
+    public void setBloquesLibres(int pbloqueInicio, int pnumBloques)
+    {
+        for(int i = 0; i < pnumBloques; i++)
+        {
+            _listaBloquesLibres.set(pbloqueInicio + i, true);            
+        }
+    }
+    
     //Buscar nombres en conflicto
     public boolean findArchivo(String pnombre)
     {
