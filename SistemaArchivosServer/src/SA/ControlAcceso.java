@@ -12,22 +12,21 @@ public class ControlAcceso {
     
     //Atributos
     
-    private int _asa;
-    private String _nombreArch;
     private String _nombreUsuario;
     private boolean _enUso;
     private int _posicionPuntero; //Donde se ubica el puntero dentro del archivo
     
     
     //Constructor
-    public ControlAcceso(int pasa, String pnombreUsuario, String pnombreArch)
+    public ControlAcceso(String pnombreUsuario, boolean penUso)
     {
-        _asa = pasa;        
         _nombreUsuario = pnombreUsuario;
-        _nombreArch = pnombreArch;
-        _enUso = true;
+        _enUso = penUso;
         _posicionPuntero = 0;
     }
+    
+
+            
 
     /**
      * @return the nombreUsuario
@@ -69,34 +68,6 @@ public class ControlAcceso {
      */
     public void setPosicionPuntero(int posicionPuntero) {
         this._posicionPuntero = posicionPuntero;
-    }
-
-    /**
-     * @return the _nombreArch
-     */
-    public String getNombreArch() {
-        return _nombreArch;
-    }
-
-    /**
-     * @param nombreArch the _nombreArch to set
-     */
-    public void setNombreArch(String nombreArch) {
-        this._nombreArch = nombreArch;
-    }
-
-    /**
-     * @return the _asa
-     */
-    public int getAsa() {
-        return _asa;
-    }
-
-    /**
-     * @param asa the _asa to set
-     */
-    public void setAsa(int asa) {
-        this._asa = asa;
     }
     
 }

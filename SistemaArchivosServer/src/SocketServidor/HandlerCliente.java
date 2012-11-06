@@ -5,7 +5,6 @@
 package SocketServidor;
 
 import Libreria.Mensaje;
-import SA.ServidorSA;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,7 +21,6 @@ public class HandlerCliente implements Runnable{
     private ObjectInputStream _entradaObj;
     private ObjectOutputStream _salidaObj;   
     private Socket _clientConexion;
-    private ServidorSA _sa;
     
     public HandlerCliente(Socket psocket) 
     {
@@ -112,9 +110,7 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("open recibido");
                 msgSend.setTipoMensaje("open");
-                String parametros[] = msgReceive.getMensaje().split(" ");
-                int mensaje = _sa.abrirArchivo(parametros[0], parametros[1]);   
-                msgSend.setMensaje(Integer.toString(mensaje));                
+                msgSend.setMensaje("Archivo abierto");                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("read"))
@@ -142,9 +138,7 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("close recibido");
                 msgSend.setTipoMensaje("close");
-                String parametros[] = msgReceive.getMensaje().split(" ");
-                _sa.cerrarArchivo(Integer.parseInt(parametros[0]));   
-                msgSend.setMensaje("Archivo Cerrado");  
+                msgSend.setMensaje("Archivo cerrado");                
                 enviarDatos(msgSend);                
             }
             else if(msgReceive.getTipoMensaje().equals("cat"))

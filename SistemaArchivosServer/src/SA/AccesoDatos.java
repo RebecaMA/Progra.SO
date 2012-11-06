@@ -82,7 +82,8 @@ public class AccesoDatos {
         _servidorSA = new ServidorSA();
         byte[] _a = new byte[plongitud];
         try {
-            RandomAccessFile _lectura = new RandomAccessFile(_servidorSA.getEstructuraDisco().getNombre(), "r");
+           // RandomAccessFile _lectura = new RandomAccessFile(_servidorSA._estructuraDisco.getNombre(), "r");
+              RandomAccessFile _lectura = new RandomAccessFile("prueba.txt","rw");
             try {
                 _lectura.seek(pinicio);
                 _lectura.read(_a);
@@ -105,7 +106,8 @@ public class AccesoDatos {
     {
         int _situacion = 0;
         try {
-            RandomAccessFile _escritura = new RandomAccessFile(_servidorSA.getEstructuraDisco().getNombre(),"rw");
+          //  RandomAccessFile _escritura = new RandomAccessFile(_servidorSA._estructuraDisco.getNombre(),"rw");
+            RandomAccessFile _escritura = new RandomAccessFile("prueba.txt","rw");
             try {
                 _escritura.seek(pinicio);
                 _escritura.writeBytes(pescribir);
