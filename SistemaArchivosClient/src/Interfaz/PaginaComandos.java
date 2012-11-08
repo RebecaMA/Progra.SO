@@ -5,8 +5,13 @@
 package Interfaz;
 
 import Libreria.*;
+
 import SocketCliente.ClienteSocket;
 import javax.swing.JOptionPane;
+
+import SocketCliente.*;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -19,7 +24,11 @@ public class PaginaComandos extends javax.swing.JFrame {
      */
     
     String _nombreUsuario;
+
     ClienteSocket _socket;
+    Boolean _sistemaMontado;
+    File _file;
+    ManejadorArchivos _manejadorArchivos;
     public PaginaComandos() {
         initComponents();
     }
@@ -29,6 +38,9 @@ public class PaginaComandos extends javax.swing.JFrame {
         _nombreUsuario = pnombreUsuario;
         LabelNombreUsuario.setText(pnombreUsuario);  
         _socket = new ClienteSocket();
+        LabelNombreUsuario.setText(pnombreUsuario);
+        BotonFileChooser.setVisible(false);         
+        
     }
      
 
@@ -53,6 +65,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         BufferDatos = new javax.swing.JScrollPane();
         TexTAreaBufferDatos = new javax.swing.JTextArea();
+        BotonFileChooser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(70, 50, 0, 0));
@@ -143,6 +156,14 @@ public class PaginaComandos extends javax.swing.JFrame {
         TexTAreaBufferDatos.setRows(5);
         BufferDatos.setViewportView(TexTAreaBufferDatos);
 
+        BotonFileChooser.setText("Elegir Archivo");
+        BotonFileChooser.setHideActionText(true);
+        BotonFileChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonFileChooserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -162,7 +183,9 @@ public class PaginaComandos extends javax.swing.JFrame {
                         .addComponent(ComboBoxComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(TextFieldCampo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(10, 10, 10)
+                        .addComponent(BotonFileChooser)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TextFieldCampo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(TextFieldCampo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,7 +195,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,14 +214,12 @@ public class PaginaComandos extends javax.swing.JFrame {
                             .addComponent(TextFieldCampo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextFieldCampo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextFieldCampo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextFieldCampo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(148, 148, 148)
-                                .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(BufferDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(TextFieldCampo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonFileChooser))
+                        .addGap(73, 73, 73)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BufferDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 257, Short.MAX_VALUE))
                     .addComponent(jScrollPane2))
                 .addGap(31, 31, 31))
@@ -355,7 +376,46 @@ public class PaginaComandos extends javax.swing.JFrame {
             break;                
         };
 
+        Mensaje _nuevoMensaje = new Mensaje();
+        String _mensaje = null;
+        _mensaje = ComboBoxComando.getSelectedItem().toString();
+        _manejadorArchivos = new ManejadorArchivos();
+
+        if(BotonFileChooser.isVisible()){
+            if(_mensaje.equals("Importar")){
+               _mensaje += " " + _nombreUsuario;
+               _mensaje += " " +TextFieldCampo1.getText();
+               _mensaje += " "+  _manejadorArchivos._leerArchivo(_file);
+            }else {
+            // Enviar q me de lo q escribo escribirlo
+                // y despues llamar a 
+                _mensaje += " " +TextFieldCampo3.getText();
+                // Con eso me devuelve el contenidop en String exportarmensaje
+                //_manejadorArchivos._escribirArchivo(_File, exportarmensaje);
+                
+            }   
+        }
+        else{
+        if(TextFieldCampo1.isVisible())
+        {
+            _mensaje += " " +TextFieldCampo1.getText();
+        }else if(TextFieldCampo2.isVisible())
+        {
+            _mensaje += " " +TextFieldCampo2.getText();
+        }else if (TextFieldCampo3.isVisible())
+        {
+            _mensaje += " " +TextFieldCampo3.getText();
+        } else if(TextFieldCampo4.isVisible())
+        {
+            _mensaje += " " +TextFieldCampo4.getText();
+        }
+        }
         
+        
+        
+        
+
+        _nuevoMensaje.setMensaje(_mensaje);
     }//GEN-LAST:event_BotonAceptarActionPerformed
 
     private void TextFieldCampo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldCampo4ActionPerformed
@@ -381,13 +441,15 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
-            BufferDatos.setVisible(false);
+            BotonFileChooser.setVisible(false);
+            BufferDatos.setVisible(false);          
             break;
             case 1:
             TextFieldCampo1.setVisible(true);
             TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 2:
@@ -395,6 +457,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 3:
@@ -402,6 +465,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 4: //
@@ -409,6 +473,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 5: //
@@ -416,6 +481,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 6: //
@@ -423,6 +489,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(true);
             break;
             case 7: //
@@ -437,6 +504,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(true);
             TextFieldCampo4.setVisible(true);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 9: //
@@ -444,37 +512,51 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
-            BufferDatos.setVisible(false);
+            BotonFileChooser.setVisible(false);
             break;
             case 10: //
             TextFieldCampo1.setVisible(true);
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
             case 11: //
+            BotonFileChooser.setVisible(false);
             TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
+            TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(true);
             BufferDatos.setVisible(false);
             break;
             case 12: //
+            BotonFileChooser.setVisible(false);
+            TextFieldCampo1.setVisible(false);
+            TextFieldCampo2.setVisible(false);
+            TextFieldCampo3.setVisible(true);
+            TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(true);
+            BufferDatos.setVisible(false);
+            break;
+            case 13: //
             TextFieldCampo1.setVisible(true);
             TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;
-            case 13: //
+            case 14: //
             TextFieldCampo1.setVisible(false);
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
+            BotonFileChooser.setVisible(false);
             BufferDatos.setVisible(false);
             break;                
-            case 14: //
+            case 15: //
             TextFieldCampo1.setVisible(false);
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
@@ -484,6 +566,16 @@ public class PaginaComandos extends javax.swing.JFrame {
         };
 
     }//GEN-LAST:event_ComboBoxComandoItemStateChanged
+
+    private void BotonFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonFileChooserActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION)
+        {
+            _file = fileChooser.getSelectedFile();
+        }
+    }//GEN-LAST:event_BotonFileChooserActionPerformed
 
     
     
@@ -532,6 +624,7 @@ public class PaginaComandos extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonAceptar;
+    private javax.swing.JButton BotonFileChooser;
     private javax.swing.JScrollPane BufferDatos;
     private javax.swing.JComboBox ComboBoxComando;
     private javax.swing.JLabel LabelNombreUsuario;
