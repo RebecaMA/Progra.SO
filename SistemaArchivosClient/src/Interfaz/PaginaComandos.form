@@ -6,9 +6,6 @@
     <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
       <Rectangle value="[70, 50, 0, 0]"/>
     </Property>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1280, 600]"/>
-    </Property>
     <Property name="undecorated" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
@@ -82,7 +79,9 @@
                           <Component id="ComboBoxComando" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="TextFieldCampo1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Component id="BotonFileChooser" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="TextFieldCampo2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="TextFieldCampo3" min="-2" max="-2" attributes="0"/>
@@ -95,7 +94,7 @@
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="670" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="54" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -118,16 +117,12 @@
                               <Component id="TextFieldCampo2" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="TextFieldCampo3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="TextFieldCampo4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="BotonFileChooser" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
-                                  <Component id="BotonAceptar" min="-2" pref="38" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Component id="BufferDatos" min="-2" pref="159" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="BotonAceptar" min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="BufferDatos" min="-2" pref="112" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="257" max="32767" attributes="0"/>
                       </Group>
@@ -325,6 +320,15 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="BotonFileChooser">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Elegir Archivo"/>
+            <Property name="hideActionText" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonFileChooserActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
