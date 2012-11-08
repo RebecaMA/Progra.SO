@@ -113,7 +113,7 @@ public class PaginaInicio extends javax.swing.JFrame {
         }
         else
         {
-            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre de usuario");
+            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre de usuario", "Shell", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_BottonIngresarActionPerformed

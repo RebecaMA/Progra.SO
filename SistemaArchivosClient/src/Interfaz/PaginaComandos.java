@@ -5,6 +5,8 @@
 package Interfaz;
 
 import Libreria.*;
+import SocketCliente.ClienteSocket;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,7 +19,7 @@ public class PaginaComandos extends javax.swing.JFrame {
      */
     
     String _nombreUsuario;
-    Boolean _sistemaMontado;
+    ClienteSocket _socket;
     public PaginaComandos() {
         initComponents();
     }
@@ -25,11 +27,8 @@ public class PaginaComandos extends javax.swing.JFrame {
      public PaginaComandos(String pnombreUsuario) {
         initComponents();
         _nombreUsuario = pnombreUsuario;
-        LabelNombreUsuario.setText(pnombreUsuario);
-        
-        
-            
-        
+        LabelNombreUsuario.setText(pnombreUsuario);  
+        _socket = new ClienteSocket();
     }
      
 
@@ -57,7 +56,6 @@ public class PaginaComandos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(70, 50, 0, 0));
-        setPreferredSize(new java.awt.Dimension(1280, 600));
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -71,7 +69,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         LabelNombreUsuario.setText("Usuario");
 
         ComboBoxComando.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        ComboBoxComando.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "df", "mount", "ls", "rm", "open", "read", "write", "repos", "close\t", "cat", "Importar", "exportar", "salir", "terminar" }));
+        ComboBoxComando.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "df", "mount", "unmount", "ls", "rm", "open", "read", "write", "repos", "close\t", "cat", "importar", "exportar", "salir", "terminar" }));
         ComboBoxComando.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 ComboBoxComandoItemStateChanged(evt);
@@ -225,26 +223,139 @@ public class PaginaComandos extends javax.swing.JFrame {
     private void BotonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAceptarActionPerformed
         // TODO add your handling code here:
         // Manda el mensaje al socket
+        
+        Mensaje mensaje = new Mensaje();
+        mensaje.setTipoMensaje(ComboBoxComando.getSelectedItem().toString());
+        mensaje.setUsuario(_nombreUsuario);
+        int indiceOperacion = ComboBoxComando.getSelectedIndex();
+                
+        switch(indiceOperacion)
+        { 
+            case 0: //
+            
+            break;
+            case 1:
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 2:
+                
+            break;
+            case 3:
+                if(TextFieldCampo1.getText().equals(""))
+                {
+                    //Ejecutar ls normal
+                }
+                else
+                {
+                    //ejecutar ls para el archivo especificado
+                }
+            break;
+            case 4: //
+                if(TextFieldCampo1.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campo en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 5: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 6: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 7: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 8: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 9: //
+                if(TextFieldCampo1.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 10: //
+                if(TextFieldCampo1.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 11: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 12: //
+                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                }
+                else
+                {
+                    
+                }
+            break;
+            case 13: //
+           
+            break;                
+            case 14: //
+           
+            break;                
+        };
 
-        Mensaje _nuevoMensaje = new Mensaje();
-        String _mensaje = null;
-        _mensaje = ComboBoxComando.getSelectedItem().toString();
-
-        if(TextFieldCampo1.isEnabled())
-        {
-            _mensaje += " " +TextFieldCampo1.getText();
-        }else if(TextFieldCampo2.isEnabled())
-        {
-            _mensaje += " " +TextFieldCampo2.getText();
-        }else if (TextFieldCampo3.isEnabled())
-        {
-            _mensaje += " " +TextFieldCampo3.getText();
-        } else if(TextFieldCampo4.isEnabled())
-        {
-            _mensaje += " " +TextFieldCampo4.getText();
-        }
-
-        _nuevoMensaje.setMensaje(_mensaje);
+        
     }//GEN-LAST:event_BotonAceptarActionPerformed
 
     private void TextFieldCampo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldCampo4ActionPerformed
@@ -280,7 +391,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             BufferDatos.setVisible(false);
             break;
             case 2:
-            TextFieldCampo1.setVisible(true);
+            TextFieldCampo1.setVisible(false);
             TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
@@ -295,7 +406,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             break;
             case 4: //
             TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
+            TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
             BufferDatos.setVisible(false);
@@ -317,15 +428,15 @@ public class PaginaComandos extends javax.swing.JFrame {
             case 7: //
             TextFieldCampo1.setVisible(true);
             TextFieldCampo2.setVisible(true);
-            TextFieldCampo3.setVisible(true);
+            TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
-            BufferDatos.setVisible(false);
+            BufferDatos.setVisible(true);
             break;
             case 8: //
             TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            TextFieldCampo4.setVisible(false);
+            TextFieldCampo2.setVisible(true);
+            TextFieldCampo3.setVisible(true);
+            TextFieldCampo4.setVisible(true);
             BufferDatos.setVisible(false);
             break;
             case 9: //
@@ -337,7 +448,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             break;
             case 10: //
             TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
+            TextFieldCampo2.setVisible(false);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
             BufferDatos.setVisible(false);
@@ -350,8 +461,8 @@ public class PaginaComandos extends javax.swing.JFrame {
             BufferDatos.setVisible(false);
             break;
             case 12: //
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
+            TextFieldCampo1.setVisible(true);
+            TextFieldCampo2.setVisible(true);
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
             BufferDatos.setVisible(false);
@@ -362,7 +473,14 @@ public class PaginaComandos extends javax.swing.JFrame {
             TextFieldCampo3.setVisible(false);
             TextFieldCampo4.setVisible(false);
             BufferDatos.setVisible(false);
-            break;
+            break;                
+            case 14: //
+            TextFieldCampo1.setVisible(false);
+            TextFieldCampo2.setVisible(false);
+            TextFieldCampo3.setVisible(false);
+            TextFieldCampo4.setVisible(false);
+            BufferDatos.setVisible(false);
+            break;                
         };
 
     }//GEN-LAST:event_ComboBoxComandoItemStateChanged
@@ -375,7 +493,7 @@ public class PaginaComandos extends javax.swing.JFrame {
        TextFieldCampo2.setText("");
        TextFieldCampo3.setText("");
        TextFieldCampo3.setText("");
-      TexTAreaBufferDatos.setText("");
+       TexTAreaBufferDatos.setText("");
     }
     /**
      * @param args the command line arguments

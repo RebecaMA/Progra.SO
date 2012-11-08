@@ -22,7 +22,8 @@ public class ClienteSocket {
     private ObjectInputStream _entradaObj;
     private ObjectOutputStream _salidaObj;    
     private Socket _clientConexion;    
-        
+    public Boolean _sistemaMontado;
+    public String _ip;
     //Metodos 
     
     
@@ -63,21 +64,22 @@ public class ClienteSocket {
     }
     
     //Se reciben los datos que el cliente envio
-    private Mensaje recibirDatos() throws IOException
+    private String recibirDatos() throws IOException
     {
-        Mensaje mensajeRecibido = new Mensaje();
+        String respuesta = "";
         try
         {
-            mensajeRecibido = (Mensaje) _entradaObj.readObject();            
+            Mensaje mensajeRecibido = (Mensaje) _entradaObj.readObject();            
+            respuesta = mensajeRecibido.getMensaje();
         }
         catch(ClassNotFoundException exeptionNotClass)
         {            
         }      
-        return mensajeRecibido;
+        return respuesta;
     }
     
     //Procesa cada una de las solicitudes que lleguen al socket
-    private void procesarConexion() throws IOException
+    /*private String procesarConexion() throws IOException
     {
         Mensaje msgReceive;        
         try
@@ -145,6 +147,7 @@ public class ClienteSocket {
         {            
         }  
     }
+    */
             
     
     //Cerrar la conexion existente
@@ -162,21 +165,18 @@ public class ClienteSocket {
         }            
     }
     
-    public void ejecutarCliente(String ptipoMensaje, String pMensaje, String pusuario)
+    public String ejecutarCliente(Mensaje pmensaje)
     {
-        Mensaje sendMsg = new Mensaje();
-        sendMsg.setTipoMensaje(ptipoMensaje);
-        sendMsg.setMensaje(pMensaje);
-        sendMsg.setUsuario(pusuario);
-        
+        String respuesta = "";
         try
         {
-            enviarDatos(sendMsg);
+            enviarDatos(pmensaje);
             System.out.println("Mensaje Enviado");
-            procesarConexion();
+            respuesta = recibirDatos();
         }
         catch(IOException exeptionES)
         {                
-        }                
+        }     
+        return respuesta;
     }    
 }
