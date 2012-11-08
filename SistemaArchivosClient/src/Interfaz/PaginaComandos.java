@@ -247,6 +247,7 @@ public class PaginaComandos extends javax.swing.JFrame {
 
         if(BotonFileChooser.isVisible()){
             if(_mensaje.equals("Importar")){
+               _mensaje += " " + _nombreUsuario;
                _mensaje += " " +TextFieldCampo1.getText();
                _mensaje += " "+  _manejadorArchivos._leerArchivo(_file);
             }else {

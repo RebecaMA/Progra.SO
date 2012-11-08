@@ -276,7 +276,7 @@ public class ServidorSA {
         return retorno; 
     }
     
-        // LS [Archivo]
+        // LS DISCO
     
     public String LS(){
          String retorno = "";
@@ -300,7 +300,36 @@ public class ServidorSA {
         return retorno; 
     }
 
+    /// Importar Archivo
     
+    public void importarArchivo(String pusuario, String pnombreArchivo, String pdatos){
+        crearArchivo(pusuario, pnombreArchivo, pdatos.length());
+        escribirArchivo(pnombreArchivo, pdatos);
+    
+    }
+    
+    /// Exportar Archivo
+    
+    public String exportarArchivo(String pnombreArchivo){
+        String mensajeRetorno;
+        setAccesoDatos(_accesoDatos);
+        int index = buscarArchivo(pnombreArchivo);
+        Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
+        mensajeRetorno = _accesoDatos.leerArchivo(_archivo.getByteInicio(),_archivo.getEspacioAsignado(), _estructuraDisco);    
+        return mensajeRetorno;
+    }
+    
+    //Cat Archivo
+    
+    public String catArchivo(String pnombreArchivo){
+        String mensajeRetorno;
+        int asa = abrirArchivo(null, pnombreArchivo);
+        mensajeRetorno = exportarArchivo(pnombreArchivo);
+        cerrarArchivo(asa);
+        
+        return mensajeRetorno;
+    
+    }
     
                     //Funcionalidades adicionales
     
@@ -355,6 +384,8 @@ public class ServidorSA {
         return _contador;
     }
      
+    
+  
      
      
      // Get y Setters
