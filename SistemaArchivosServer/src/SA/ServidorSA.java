@@ -322,7 +322,7 @@ public class ServidorSA {
     
     public void importarArchivo(String pusuario, String pnombreArchivo, String pdatos){
         int _asa = crearArchivo(pusuario, pnombreArchivo, pdatos.length());
-        escribirArchivo(pnombreArchivo, pdatos);
+        escribirArchivo(_asa+"", pdatos);
         reposicionarArchivo(_asa+"","ini",0);
         
     
@@ -410,13 +410,13 @@ public class ServidorSA {
     public int buscarArchivoControlAcceso(String pasa)
     {
         int _contador = 0;
-       Boolean _boolean = true;
-       int index = Integer.parseInt(pasa);
+        Boolean _boolean = true;
+        int index = Integer.parseInt(pasa);
      
        
         while(_estructuraControlAcceso.size() > _contador && _boolean)
         {
-            if(_estructuraControlAcceso.get(index).getAsa() == index)
+            if(_estructuraControlAcceso.get(_contador).getAsa() == index)
             {
              _boolean = false;
             }

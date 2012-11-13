@@ -435,6 +435,12 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
+                String msj = "";
+                msj = msj + _nombreUsuario + "/";
+                msj = msj + TextFieldCampo1.getText() + "/";
+                msj = msj + _manejadorArchivos._leerArchivo(_file);
+                mensaje.setMensaje(msj);
+                _socket.ejecutarCliente(mensaje);
 
             }
             break;
