@@ -30,9 +30,19 @@ public class AccesoDatos {
     private File _Disco;
     private File _Archivo;
     private ServidorSA _servidorSA;
+    private EstructuraControlDisco _estructura;
+
+    public void setServidorSA(ServidorSA _servidorSA) {
+        this._servidorSA = _servidorSA;
+    }
+
+    public EstructuraControlDisco getEstructura() {
+        return _estructura;
+    }
     
-    public AccesoDatos(){
-        
+    public AccesoDatos()
+    {
+        _estructura = new EstructuraControlDisco();    
     }
     
     public String crearSA(EstructuraControlDisco pdisco){
@@ -50,9 +60,9 @@ public class AccesoDatos {
     return _fileDescriptor;
    }
 
-    public EstructuraControlDisco usarSA(String pnombre)
+    public boolean usarSA(String pnombre)
     {
-        EstructuraControlDisco _estructura = new EstructuraControlDisco();
+       boolean retorno = true;
          try
          {
             FileInputStream fileIn =  new FileInputStream(pnombre);
@@ -60,16 +70,17 @@ public class AccesoDatos {
             _estructura = (EstructuraControlDisco) in.readObject();
             in.close();
             fileIn.close();
+            retorno = true;
         }catch(IOException i)
         {
-           System.out.println(i.toString());
+           retorno = false;
    
         }catch(ClassNotFoundException c)
         {
-           System.out.println(c.toString()); 
+          retorno = false;
         }
          
-         return _estructura;
+         return retorno;
       
     }
  

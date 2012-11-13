@@ -47,10 +47,12 @@ public class ServidorSA {
     }
     
     // Usar disco con el nombre.
-    public String usarSA(String pnombre){
+    public boolean usarSA(String pnombre){
         setAccesoDatos(new AccesoDatos());
-        setEstructuraDisco(getAccesoDatos().usarSA(pnombre));
-        return  getEstructuraDisco().getNombre() + getEstructuraDisco().getNumBloques();
+        boolean retorno = getAccesoDatos().usarSA(pnombre);
+        setEstructuraDisco(getAccesoDatos().getEstructura());
+        return retorno;
+       
     
     }
     
@@ -261,6 +263,11 @@ public class ServidorSA {
     public String LS(String pnombrearchivo){
          int indexcontroldisco;
          String retorno;
+         if(!buscarArchivo(pnombrearchivo))
+         {
+             retorno = "-1";
+         }
+         else{
          indexcontroldisco = buscarArchivoEstructuraDisco(pnombrearchivo);
          Archivo _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
          
@@ -273,7 +280,7 @@ public class ServidorSA {
          if(findArchivoAbierto(pnombrearchivo)){
         ControlAcceso _acceso = _estructuraControlAcceso.get(indexcontroldisco);
            retorno += "Archivo Abierto por " +  _acceso.getNombreUsuario() + "\n";
-         }  
+         }  }
         return retorno; 
     }
     
@@ -282,9 +289,13 @@ public class ServidorSA {
     public String LS(){
          String retorno = "";
          ArrayList<Archivo> _lista = _estructuraDisco.getListaArchivos();
-         for(int i=0;i<_lista.size();i++)
+         if(_lista.isEmpty())
          {
-         
+             retorno = "Disco no contiene archivos";
+         }
+         else{
+         for(int i=0;i<_lista.size();i++)
+         {         
          Archivo _archivo = _lista.get(i);
          retorno += "*** ***" + "\n";
          retorno += "Nombre Archivo: " + _archivo.getNombre() + "\n";
@@ -297,7 +308,7 @@ public class ServidorSA {
         ControlAcceso _acceso = getEstructuraControlAcceso().get(i);
            retorno += "Archivo Abierto por: " +  _acceso.getNombreUsuario() + "\n";
          }  
-         }
+         }}
         return retorno; 
     }
 
@@ -409,6 +420,29 @@ public class ServidorSA {
         return _contador;
     }
     
+    
+       public boolean buscarArchivo(String pasa)
+    {
+        int _contador = 0;
+       Boolean _boolean = true;
+       Boolean _retorno = false;
+       int index = Integer.parseInt(pasa);
+     
+       
+        while(_estructuraControlAcceso.size() > _contador && _boolean)
+        {
+            if(_estructuraControlAcceso.get(index).getAsa() == index)
+            {
+             _boolean = false;
+             _retorno = true;
+            }
+            else {
+                _contador++;
+            }      
+        }
+        
+        return _retorno;
+    }
   
      
      
