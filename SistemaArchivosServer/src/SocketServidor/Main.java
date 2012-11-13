@@ -25,11 +25,11 @@ public class Main {
     public static void main(String[] args) {
         
         
-      //  VentanaEjecucionServidor ventana = new VentanaEjecucionServidor();
-       // ventana.setVisible(true);
+        VentanaEjecucionServidor ventana = new VentanaEjecucionServidor();
+        ventana.setVisible(true);
         
-        ServidorSA _servidor = new ServidorSA();
-        System.out.println(_servidor.usarSA("prueba.txt"));
+   //     ServidorSA _servidor = new ServidorSA();
+   //     System.out.println(_servidor.usarSA("prueba.txt"));
    
          
        
