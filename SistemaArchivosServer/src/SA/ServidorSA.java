@@ -189,6 +189,9 @@ public class ServidorSA {
        else 
        {
           retorno = _accesoDatos.leerArchivo(puntero, pnumBytes,_estructuraDisco);
+          _controlAcceso.setPosicionPuntero(_controlAcceso.getPosicionPuntero() +retorno.length());
+          _estructuraControlAcceso.set(indexcontrolacceso, _controlAcceso);
+          
        }
         return retorno;
     }
@@ -217,6 +220,9 @@ public class ServidorSA {
            retorno = _accesoDatos.escribirArchivo(pdata, puntero,_estructuraDisco);
            _archivo.setFechaModificacion(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/" + fecha.get(Calendar.YEAR));
            getEstructuraDisco().getListaArchivos().set(indexcontroldisco, _archivo);
+          _controlAcceso.setPosicionPuntero(_controlAcceso.getPosicionPuntero() +retorno);
+          _estructuraControlAcceso.set(indexcontrolacceso, _controlAcceso);
+          
        }
         
         return retorno; //bytes realmente escritos
@@ -315,8 +321,10 @@ public class ServidorSA {
     /// Importar Archivo
     
     public void importarArchivo(String pusuario, String pnombreArchivo, String pdatos){
-        crearArchivo(pusuario, pnombreArchivo, pdatos.length());
+        int _asa = crearArchivo(pusuario, pnombreArchivo, pdatos.length());
         escribirArchivo(pnombreArchivo, pdatos);
+        reposicionarArchivo(_asa+"","ini",0);
+        
     
     }
     

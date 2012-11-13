@@ -172,7 +172,9 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("Importar recibido");
                 msgSend.setTipoMensaje("Importar");
-                msgSend.setMensaje("Archivo Importado");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                _sa.importarArchivo(parametros[0], parametros[1], parametros[2]);
+                msgSend.setMensaje("Archivo importado");
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("exportar"))
@@ -231,8 +233,7 @@ public class HandlerCliente implements Runnable{
         while(true)
         {
             try
-            {
-                
+            {                
                 procesarConexion();
             }
              catch(IOException exeptionES)
