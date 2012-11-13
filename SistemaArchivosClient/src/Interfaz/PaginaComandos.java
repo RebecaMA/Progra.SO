@@ -359,11 +359,11 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-                if(findIDConflicto(_nombreUsuario))
+                if(findIDConflicto(TextFieldCampo1.getText()))
                 {
                     try
                     {
-                        int bytes = Integer.parseInt(TextFieldCampo2.getText());
+                        int bytes = Integer.parseInt(TextFieldCampo2.getText());                        
                         mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + bytes);                        
                         TextAreaResultado.setText(TextAreaResultado.getText() + "\nREAD:\n" + _socket.ejecutarCliente(mensaje));
                     }
@@ -386,7 +386,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-                if(findIDConflicto(_nombreUsuario))
+                if(findIDConflicto(TextFieldCampo1.getText()))
                 {
                     mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TexTAreaBufferDatos.getText());                        
                     TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));                    
@@ -440,9 +440,8 @@ public class PaginaComandos extends javax.swing.JFrame {
                 msj = msj + TextFieldCampo1.getText() + "/";
                 msj = msj + _manejadorArchivos._leerArchivo(_file);
                 mensaje.setMensaje(msj);
-                _socket.ejecutarCliente(mensaje);
-
-            }
+                String resultado = _socket.ejecutarCliente(mensaje);                
+            }            
             break;
             case 12: //
             if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))

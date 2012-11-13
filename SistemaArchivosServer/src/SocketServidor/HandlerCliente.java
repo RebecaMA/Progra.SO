@@ -111,7 +111,7 @@ public class HandlerCliente implements Runnable{
                 }
                 else
                 {
-                    
+                    msgSend.setMensaje(_sa.LS(msgReceive.getMensaje()));
                 }
                 enviarDatos(msgSend);                
             }
@@ -135,15 +135,18 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("read recibido");
                 msgSend.setTipoMensaje("read");
-                msgSend.setMensaje("Archivo leido");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.leerArchivo(parametros[0], Integer.parseInt(parametros[1])));                
                 enviarDatos(msgSend);
+            
             }
             else if(msgReceive.getTipoMensaje().equals("write"))
             {
                 System.out.println("write recibido");
                 msgSend.setTipoMensaje("write");
-                msgSend.setMensaje("Archivo modificado");                
-                enviarDatos(msgSend);
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.escribirArchivo(parametros[0], parametros[1]) + "");                
+                enviarDatos(msgSend);                
             }
             else if(msgReceive.getTipoMensaje().equals("repos"))
             {

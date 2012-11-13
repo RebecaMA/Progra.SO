@@ -271,7 +271,7 @@ public class ServidorSA {
          String retorno;
          if(!buscarArchivo(pnombrearchivo))
          {
-             retorno = "-1";
+             retorno = "El archivo especificado no existe";
          }
          else{
          indexcontroldisco = buscarArchivoEstructuraDisco(pnombrearchivo);
@@ -320,12 +320,23 @@ public class ServidorSA {
 
     /// Importar Archivo
     
-    public void importarArchivo(String pusuario, String pnombreArchivo, String pdatos){
+    public String importarArchivo(String pusuario, String pnombreArchivo, String pdatos){
         int _asa = crearArchivo(pusuario, pnombreArchivo, pdatos.length());
-        escribirArchivo(_asa+"", pdatos);
-        reposicionarArchivo(_asa+"","ini",0);
-        
-    
+        if(_asa == -2)
+        {
+            return "Nombres de archivos en conflicto";
+        }
+        else if(_asa == -1)
+        {
+            return "El archivo esta siendo usado por otro usuario";
+        }
+        else
+        {
+            escribirArchivo(_asa+"", pdatos);
+            reposicionarArchivo(_asa+"","ini",0);
+            cerrarArchivo(_asa);   
+            return "Archivo importado con exito";
+        }        
     }
     
     /// Exportar Archivo
@@ -434,12 +445,12 @@ public class ServidorSA {
         int _contador = 0;
        Boolean _boolean = true;
        Boolean _retorno = false;
-       int index = Integer.parseInt(pasa);
+       
      
        
-        while(_estructuraControlAcceso.size() > _contador && _boolean)
+        while(_estructuraDisco.getListaArchivos().size() > _contador && _boolean)
         {
-            if(_estructuraControlAcceso.get(index).getAsa() == index)
+            if(_estructuraDisco.getListaArchivos().get(_contador).getNombre().equals(pasa))
             {
              _boolean = false;
              _retorno = true;
@@ -496,5 +507,20 @@ public class ServidorSA {
     public void setEstructuraDisco(EstructuraControlDisco estructuraDisco) {
         this._estructuraDisco = estructuraDisco;
     }
-
+    
+    public void salir(String pusuario)
+      {
+          int _contador=0;
+          int _asa;
+          ControlAcceso _acceso;
+          for(_contador = 0;_contador < _estructuraControlAcceso.size(); _contador++)
+          {
+              _acceso = _estructuraControlAcceso.get(_contador);
+              if(_acceso.getNombreUsuario().equals(pusuario))
+              {
+                  _asa = _acceso.getAsa();
+                  cerrarArchivo(_asa);
+              }
+          }
+      }
 }

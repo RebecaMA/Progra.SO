@@ -155,6 +155,7 @@ public class VentanaEjecucionServidor extends javax.swing.JFrame {
                 {
                     _server.crearServidor(Integer.parseInt(jTextField1.getText()), 100);
                     _server.getSa().crearSA(jTextField2.getText(), Integer.parseInt(jTextField3.getText()), Integer.parseInt(jTextField5.getText()));
+                     _server.getSa().usarSA(jTextField2.getText());
                     System.out.println("Servidor Creado");
                     _server.ejecutarServidor();                   
                 }
