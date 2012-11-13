@@ -429,7 +429,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 11: //
-            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
@@ -600,8 +600,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             BotonFileChooser.setEnabled(false);
             TexTAreaBufferDatos.setEnabled(false);
             break;
-            case 11: //
-            BotonFileChooser.setEnabled(false);
+            case 11: //            
             TextFieldCampo1.setEnabled(true);
             TextFieldCampo2.setEnabled(false);
             TextFieldCampo3.setEnabled(false);
