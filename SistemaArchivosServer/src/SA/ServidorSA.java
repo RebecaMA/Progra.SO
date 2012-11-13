@@ -168,13 +168,14 @@ public class ServidorSA {
     public String leerArchivo(String pasa, int pnumBytes)
     { 
         String retorno;
-        int index,finalizacionArchivo,puntero;
+        int indexcontrolacceso,indexcontroldisco,finalizacionArchivo,puntero;
         ControlAcceso  _controlAcceso;
         Archivo _archivo;
         
-         index = buscarArchivo(pasa); 
-       _controlAcceso = _estructuraControlAcceso.get(index);
-       _archivo = _estructuraDisco.getListaArchivos().get(index);
+         indexcontrolacceso = buscarArchivoControlAcceso(pasa); 
+         indexcontroldisco = buscarArchivoEstructuraDisco(_estructuraControlAcceso.get(indexcontrolacceso).getNombreArch());
+       _controlAcceso = _estructuraControlAcceso.get(indexcontrolacceso);
+       _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
        _accesoDatos = new AccesoDatos();
        
        finalizacionArchivo = _archivo.getBloqueInicio() * _estructuraDisco.getTamanoBloque() + _archivo.getEspacioAsignado() + _estructuraDisco.getTamanoAreaControl();
@@ -193,14 +194,15 @@ public class ServidorSA {
     // Escribe el archivo, retorno el numero de bytes escritos
     public int escribirArchivo(String pasa, String pdata)
     {        
-       int index, retorno,puntero;
+       int indexcontrolacceso,indexcontroldisco, retorno,puntero;
        ControlAcceso  _controlAcceso;
        Archivo _archivo;
        Calendar fecha;
        
-       index = buscarArchivo(pasa); 
-       _controlAcceso = _estructuraControlAcceso.get(index);
-       _archivo = _estructuraDisco.getListaArchivos().get(index);
+       indexcontrolacceso = buscarArchivoControlAcceso(pasa);
+       indexcontroldisco = buscarArchivoEstructuraDisco(_estructuraControlAcceso.get(indexcontrolacceso).getNombreArch());
+       _controlAcceso = _estructuraControlAcceso.get(indexcontrolacceso);
+       _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
        _accesoDatos = new AccesoDatos();
        fecha = new GregorianCalendar();       
        puntero = _controlAcceso.getPosicionPuntero()+ _archivo.getByteInicio();
@@ -212,7 +214,7 @@ public class ServidorSA {
        {
            retorno = _accesoDatos.escribirArchivo(pdata, puntero,_estructuraDisco);
            _archivo.setFechaModificacion(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/" + fecha.get(Calendar.YEAR));
-           getEstructuraDisco().getListaArchivos().set(index, _archivo);
+           getEstructuraDisco().getListaArchivos().set(indexcontroldisco, _archivo);
        }
         
         return retorno; //bytes realmente escritos
@@ -222,12 +224,13 @@ public class ServidorSA {
     // Reposicionar Archivo
     public int reposicionarArchivo(String pasa,String pmodo,int pnumeroBytes)
     {
-        int index,posicion;
+        int indexcontrolacceso,indexcontroldisco,posicion;
         
         
-        index = buscarArchivo(pasa);
-        Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
-        ControlAcceso _acceso = _estructuraControlAcceso.get(index);
+        indexcontrolacceso = buscarArchivoControlAcceso(pasa);
+        indexcontroldisco = buscarArchivoEstructuraDisco(_estructuraControlAcceso.get(indexcontrolacceso).getNombreArch());
+        Archivo _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
+        ControlAcceso _acceso = _estructuraControlAcceso.get(indexcontrolacceso);
         
         posicion = 0;
         
@@ -247,7 +250,7 @@ public class ServidorSA {
         }
         
         _acceso.setPosicionPuntero(posicion);
-        getEstructuraControlAcceso().set(index, _acceso);
+        getEstructuraControlAcceso().set(indexcontrolacceso, _acceso);
         return posicion;
     
     
@@ -255,11 +258,11 @@ public class ServidorSA {
 
     // LS [Archivo]
     
-    public String LSarchivo(String pnombrearchivo){
-         int index;
+    public String LS(String pnombrearchivo){
+         int indexcontroldisco;
          String retorno;
-         index = buscarArchivo(pnombrearchivo);
-         Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
+         indexcontroldisco = buscarArchivoEstructuraDisco(pnombrearchivo);
+         Archivo _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
          
          retorno = "Nombre Archivo: " + _archivo.getNombre() + "\n";
          retorno += "Tamaño en Bytes: " + _archivo.getEspacioAsignado() + "\n";
@@ -268,7 +271,7 @@ public class ServidorSA {
          retorno += "Fecha Modificacion: " + _archivo.getFechaModificacion() + "\n";
          
          if(findArchivoAbierto(pnombrearchivo)){
-        ControlAcceso _acceso = _estructuraControlAcceso.get(index);
+        ControlAcceso _acceso = _estructuraControlAcceso.get(indexcontroldisco);
            retorno += "Archivo Abierto por " +  _acceso.getNombreUsuario() + "\n";
          }  
         return retorno; 
@@ -311,8 +314,8 @@ public class ServidorSA {
     public String exportarArchivo(String pnombreArchivo){
         String mensajeRetorno;
         setAccesoDatos(_accesoDatos);
-        int index = buscarArchivo(pnombreArchivo);
-        Archivo _archivo = _estructuraDisco.getListaArchivos().get(index);
+        int indexcontroldisco = buscarArchivoEstructuraDisco(pnombreArchivo);
+        Archivo _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
         mensajeRetorno = _accesoDatos.leerArchivo(_archivo.getByteInicio(),_archivo.getEspacioAsignado(), _estructuraDisco);    
         return mensajeRetorno;
     }
@@ -363,10 +366,11 @@ public class ServidorSA {
      
      
          
-    public int buscarArchivo(String pasa)
+    public int buscarArchivoEstructuraDisco(String pasa)
     {
         int _contador = 0;
        Boolean _boolean = true;
+     
        
         while(_estructuraDisco.getListaArchivos().size() > _contador && _boolean)
         {
@@ -382,6 +386,28 @@ public class ServidorSA {
         return _contador;
     }
      
+    
+           
+    public int buscarArchivoControlAcceso(String pasa)
+    {
+        int _contador = 0;
+       Boolean _boolean = true;
+       int index = Integer.parseInt(pasa);
+     
+       
+        while(_estructuraControlAcceso.size() > _contador && _boolean)
+        {
+            if(_estructuraControlAcceso.get(index).getAsa() == index)
+            {
+             _boolean = false;
+            }
+            else {
+                _contador++;
+            }      
+        }
+        
+        return _contador;
+    }
     
   
      
