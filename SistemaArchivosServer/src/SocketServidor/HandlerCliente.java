@@ -23,12 +23,14 @@ public class HandlerCliente implements Runnable{
     private ObjectOutputStream _salidaObj;   
     private Socket _clientConexion;
     private ServidorSA _sa;
-    
+    private boolean _banderaThread;
+            
     public HandlerCliente(Socket psocket, ServidorSA psa) 
     {
         _clientConexion = psocket;
         _entradaObj = null;
         _salidaObj = null;
+        _banderaThread = true;
         _sa = psa;
     }
     
@@ -98,6 +100,7 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("unmount recibido");
                 _sa.deshablilitarSA();
+                _banderaThread = false;
                 closeConexion();                
             }            
             else if(msgReceive.getTipoMensaje().equals("ls"))
@@ -234,7 +237,7 @@ public class HandlerCliente implements Runnable{
              catch(IOException exeptionES)
             {            
             } 
-        while(true)
+        while(_banderaThread)
         {
             try
             {                
