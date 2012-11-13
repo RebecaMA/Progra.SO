@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import SocketCliente.*;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 
 /**
@@ -26,9 +27,10 @@ public class PaginaComandos extends javax.swing.JFrame {
     String _nombreUsuario;
 
     ClienteSocket _socket;
-    Boolean _sistemaMontado;
     File _file;
     ManejadorArchivos _manejadorArchivos;
+    ArrayList<IDArch> _listaID;
+    
     public PaginaComandos() {
         initComponents();
     }
@@ -38,16 +40,18 @@ public class PaginaComandos extends javax.swing.JFrame {
         _nombreUsuario = pnombreUsuario;
         LabelNombreUsuario.setText(pnombreUsuario);  
         _socket = new ClienteSocket();
-        LabelNombreUsuario.setText(pnombreUsuario);
-        BotonFileChooser.setVisible(false);         
+        _listaID = new ArrayList<IDArch>(50);
         
+        LabelNombreUsuario.setText(pnombreUsuario);  
+        TextFieldCampo1.setEnabled(false);
+        TextFieldCampo2.setEnabled(false);
+        TextFieldCampo3.setEnabled(false);
+        BotonFileChooser.setEnabled(false);
+        TexTAreaBufferDatos.setEnabled(false);
     }
      
-
-
     
-
-    @SuppressWarnings("unchecked")
+     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -96,7 +100,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         TextFieldCampo1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TextFieldCampo1.setForeground(new java.awt.Color(0, 102, 102));
         TextFieldCampo1.setText("Campo 1");
-        TextFieldCampo1.setPreferredSize(new java.awt.Dimension(85, 26));
+        TextFieldCampo1.setPreferredSize(new java.awt.Dimension(120, 26));
         TextFieldCampo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TextFieldCampo1ActionPerformed(evt);
@@ -106,12 +110,17 @@ public class PaginaComandos extends javax.swing.JFrame {
         TextFieldCampo2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TextFieldCampo2.setForeground(new java.awt.Color(0, 102, 102));
         TextFieldCampo2.setText("Campo 2");
-        TextFieldCampo2.setPreferredSize(new java.awt.Dimension(85, 26));
+        TextFieldCampo2.setPreferredSize(new java.awt.Dimension(120, 26));
 
         TextFieldCampo3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TextFieldCampo3.setForeground(new java.awt.Color(0, 102, 102));
         TextFieldCampo3.setText("Campo 3");
-        TextFieldCampo3.setPreferredSize(new java.awt.Dimension(85, 26));
+        TextFieldCampo3.setPreferredSize(new java.awt.Dimension(120, 26));
+        TextFieldCampo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextFieldCampo3ActionPerformed(evt);
+            }
+        });
 
         BotonAceptar.setBackground(new java.awt.Color(0, 51, 153));
         BotonAceptar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -128,6 +137,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         jScrollPane2.setBorder(null);
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        TextAreaResultado.setEditable(false);
         TextAreaResultado.setBackground(new java.awt.Color(204, 204, 204));
         TextAreaResultado.setColumns(20);
         TextAreaResultado.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -159,29 +169,31 @@ public class PaginaComandos extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(LabelNombreUsuario))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(ComboBoxComando, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(TextFieldCampo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(TextFieldCampo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(26, 26, 26)
+                            .addComponent(TextFieldCampo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(LabelNombreUsuario))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BufferDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ComboBoxComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(BotonFileChooser)
+                            .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TextFieldCampo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(TextFieldCampo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(TextFieldCampo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(BotonFileChooser))
+                        .addComponent(BufferDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -201,11 +213,12 @@ public class PaginaComandos extends javax.swing.JFrame {
                             .addComponent(TextFieldCampo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextFieldCampo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextFieldCampo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(BotonFileChooser)
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(BotonFileChooser)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(BufferDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 258, Short.MAX_VALUE))
                     .addComponent(jScrollPane2))
@@ -216,7 +229,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,139 +239,190 @@ public class PaginaComandos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BotonFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonFileChooserActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION)
+        {
+            _file = fileChooser.getSelectedFile();
+        }
+    }//GEN-LAST:event_BotonFileChooserActionPerformed
+
     private void BotonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAceptarActionPerformed
         // TODO add your handling code here:
         // Manda el mensaje al socket
-        
+
         Mensaje mensaje = new Mensaje();
         mensaje.setTipoMensaje(ComboBoxComando.getSelectedItem().toString());
         mensaje.setUsuario(_nombreUsuario);
         int indiceOperacion = ComboBoxComando.getSelectedIndex();
-                
+
         switch(indiceOperacion)
-        { 
-            case 0: //
-            
+        {
+            case 0:
+            if(!_socket._sistemaMontado)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {                
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+  _socket.ejecutarCliente(mensaje));                
+            }
             break;
             case 1:
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                try
                 {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
+                    TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+_socket.conectarServidor(TextFieldCampo1.getText(), Integer.parseInt(TextFieldCampo2.getText())));                    
                 }
-                else
+                catch(NumberFormatException exception)
                 {
-                    
-                }
+                    JOptionPane.showMessageDialog(this, "Debe especificar un numero en Puerto", "Shell", JOptionPane.ERROR_MESSAGE);
+                }                                    
+            }
             break;
             case 2:
-                
+            if(!_socket._sistemaMontado)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
+            }
+            else
+            {
+                _socket.ejecutarCliente(mensaje);
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.closeConexion());
+            }            
             break;
             case 3:
-                if(TextFieldCampo1.getText().equals(""))
-                {
-                    //Ejecutar ls normal
-                }
-                else
-                {
-                    //ejecutar ls para el archivo especificado
-                }
+            if(TextFieldCampo1.getText().equals(""))
+            {
+                //Ejecutar ls normal
+            }
+            else
+            {
+                //ejecutar ls para el archivo especificado
+            }
             break;
             case 4: //
-                if(TextFieldCampo1.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campo en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campo en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 5: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 6: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 7: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 8: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 9: //
-                if(TextFieldCampo1.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 10: //
-                if(TextFieldCampo1.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 11: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
             case 12: //
-                if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);                    
-                }
-                else
-                {
-                    
-                }
+            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+
+            }
             break;
-            case 13: //
-           
-            break;                
-            case 14: //
-           
-            break;                
+            case 13: 
+            if(!_socket._sistemaMontado)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
+            }
+            else
+            {
+                _socket.ejecutarCliente(mensaje);
+                System.out.println(mensaje.getTipoMensaje());
+               System.exit(0);
+            } 
+
+            break;
+            case 14:
+             if(!_socket._sistemaMontado)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
+            }
+            else
+            {
+                _socket.ejecutarCliente(mensaje);
+                System.out.println(mensaje.getTipoMensaje());
+               System.exit(0);
+            }  
+            break;
         };
 
         Mensaje _nuevoMensaje = new Mensaje();
@@ -368,30 +432,30 @@ public class PaginaComandos extends javax.swing.JFrame {
 
         if(BotonFileChooser.isVisible()){
             if(_mensaje.equals("Importar")){
-               _mensaje += " " + _nombreUsuario;
-               _mensaje += " " +TextFieldCampo1.getText();
-               _mensaje += " "+  _manejadorArchivos._leerArchivo(_file);
+                _mensaje += " " + _nombreUsuario;
+                _mensaje += " " +TextFieldCampo1.getText();
+                _mensaje += " "+  _manejadorArchivos._leerArchivo(_file);
             }else {
-            // Enviar q me de lo q escribo escribirlo
-                // y despues llamar a 
+                // Enviar q me de lo q escribo escribirlo
+                // y despues llamar a
                 _mensaje += " " +TextFieldCampo3.getText();
                 // Con eso me devuelve el contenidop en String exportarmensaje
                 //_manejadorArchivos._escribirArchivo(_File, exportarmensaje);
-                
-            }   
+
+            }
         }
         else{
-        if(TextFieldCampo1.isVisible())
-        {
-            _mensaje += " " +TextFieldCampo1.getText();
-        }else if(TextFieldCampo2.isVisible())
-        {
-            _mensaje += " " +TextFieldCampo2.getText();
-        }else if (TextFieldCampo3.isVisible())
-        {
-            _mensaje += " " +TextFieldCampo3.getText();        
+            if(TextFieldCampo1.isVisible())
+            {
+                _mensaje += " " +TextFieldCampo1.getText();
+            }else if(TextFieldCampo2.isVisible())
+            {
+                _mensaje += " " +TextFieldCampo2.getText();
+            }else if (TextFieldCampo3.isVisible())
+            {
+                _mensaje += " " +TextFieldCampo3.getText();
+            }
         }
-    }     
 
         _nuevoMensaje.setMensaje(_mensaje);
     }//GEN-LAST:event_BotonAceptarActionPerformed
@@ -411,124 +475,144 @@ public class PaginaComandos extends javax.swing.JFrame {
 
         switch(_index)
         { case 0: //
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);          
+            TextFieldCampo1.setEnabled(false);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 1:
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(true);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 2:
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(false);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 3:
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 4: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 5: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(true);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 6: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 7: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(true);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(true);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(true);
             break;
             case 8: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(true);
-            TextFieldCampo3.setVisible(true);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(true);
+            TextFieldCampo3.setEnabled(true);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 9: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
             break;
             case 10: //
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 11: //
-            BotonFileChooser.setVisible(false);
-            TextFieldCampo1.setVisible(true);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(true);
-            BufferDatos.setVisible(false);
+            BotonFileChooser.setEnabled(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(true);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 12: //
-            BotonFileChooser.setVisible(false);
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(true);
-            BotonFileChooser.setVisible(true);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(true);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 13: //
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
+            TextFieldCampo1.setEnabled(false);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
             break;
             case 14: //
-            TextFieldCampo1.setVisible(false);
-            TextFieldCampo2.setVisible(false);
-            TextFieldCampo3.setVisible(false);
-            BotonFileChooser.setVisible(false);
-            BufferDatos.setVisible(false);
-            break;               
+            TextFieldCampo1.setEnabled(false);
+            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo3.setEnabled(false);
+            BotonFileChooser.setEnabled(false);
+            TexTAreaBufferDatos.setEnabled(false);
+            break;
         };
-
     }//GEN-LAST:event_ComboBoxComandoItemStateChanged
-
-    private void BotonFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonFileChooserActionPerformed
+    
+    private int findASA(String pid)
+    {
+        int asa = -1;
+        for(int i = 0; i < _listaID.size(); i++)
+        {            
+            if(_listaID.get(i).getId().equals(pid))
+            {                
+                asa = _listaID.get(i).getAsa();
+                break;
+            }
+        }        
+        return asa;
+    }
+    
+    private boolean findIDConflicto(String pid)
+    {
+        boolean resultado = false;
+        for(int i = 0; i < _listaID.size(); i++)
+        {            
+            if(_listaID.get(i).getId().equals(pid))
+            {                
+                resultado = true;
+                break;
+            }
+        }        
+        return resultado;
+    }
+    
+    private void TextFieldCampo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldCampo3ActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if(result == JFileChooser.APPROVE_OPTION)
-        {
-            _file = fileChooser.getSelectedFile();
-        }
-    }//GEN-LAST:event_BotonFileChooserActionPerformed
+    }//GEN-LAST:event_TextFieldCampo3ActionPerformed
 
     
     
@@ -570,7 +654,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PaginaComandos().setVisible(true);
+                new PaginaComandos().setEnabled(true);
                 
             }
         });

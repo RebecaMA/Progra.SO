@@ -6,6 +6,7 @@ package SocketServidor;
 
 //Imports
 
+import SA.ServidorSA;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,6 +21,7 @@ public class ServidorSocket {
     
             //Atributos
     private ServerSocket _server; 
+    private ServidorSA _sa;
         
             //Metodos
     
@@ -29,22 +31,24 @@ public class ServidorSocket {
     {
         try 
         {
-            _server = new ServerSocket(pport, pnumConexiones);           
+            _server = new ServerSocket(pport, pnumConexiones);             
+            setSa(new ServidorSA());
         }
         catch(IOException exeptionES)
         {           
         }   
     }
-    
+       
     public void ejecutarServidor()
     {
         while(true)
         {
             Socket clienteConexion;
             try
-            {
-                clienteConexion = _server.accept();                
-                HandlerCliente client = new HandlerCliente(clienteConexion);
+            {                
+                clienteConexion = _server.accept();         
+                System.out.println("Nueva Conexion");
+                HandlerCliente client = new HandlerCliente(clienteConexion, getSa());
                 Thread hiloCliente = new Thread(client);
                 hiloCliente.start();
             }
@@ -52,5 +56,19 @@ public class ServidorSocket {
             {                
             }                          
         }            
+    }
+
+    /**
+     * @return the _sa
+     */
+    public ServidorSA getSa() {
+        return _sa;
+    }
+
+    /**
+     * @param sa the _sa to set
+     */
+    public void setSa(ServidorSA sa) {
+        this._sa = sa;
     }
 }

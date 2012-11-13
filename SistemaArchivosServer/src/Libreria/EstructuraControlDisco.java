@@ -264,4 +264,24 @@ public class EstructuraControlDisco implements Serializable {
         }        
         return conflicto;
     }
+    
+    public int getTamanoBytes()
+    {
+        return (_tamanoAreaControl + _numBloques) * _tamanoBloque;
+    }
+    
+    public int getEspacioUsadoBytes()
+    {
+        return _espacioUsado * _tamanoBloque;
+    }
+    
+    public int getEspacioLibreBytes()
+    {
+        return ((_tamanoAreaControl + _numBloques) -_espacioUsado) * _tamanoBloque;
+    }
+    
+    public int getPorcentajeUso()
+    {
+        return _espacioUsado * 100 / (_tamanoAreaControl + _numBloques);
+    }    
 }

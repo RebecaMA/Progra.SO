@@ -21,13 +21,11 @@ public class ServidorSA {
     public EstructuraControlDisco _estructuraDisco;
     private ArrayList<ControlAcceso> _estructuraControlAcceso;
     private AccesoDatos _accesoDatos;
-    int _tamañoBloqueControl; // Tiene el tamaño del bloque de inicio pongamoslo de 500 para empezar
     private int _numasa;
         
     //Inicialización de Servidor SA
     public ServidorSA()
-    {
-        _tamañoBloqueControl = 500;
+    {        
         _numasa = 0;
         _estructuraControlAcceso= new ArrayList<ControlAcceso>(50);
     }
@@ -179,7 +177,7 @@ public class ServidorSA {
        _archivo = _estructuraDisco.getListaArchivos().get(index);
        _accesoDatos = new AccesoDatos();
        
-       finalizacionArchivo = _archivo.getBloqueInicio() * _estructuraDisco.getTamanoBloque() + _archivo.getEspacioAsignado() + _tamañoBloqueControl;
+       finalizacionArchivo = _archivo.getBloqueInicio() * _estructuraDisco.getTamanoBloque() + _archivo.getEspacioAsignado() + _estructuraDisco.getTamanoAreaControl();
        puntero = _controlAcceso.getPosicionPuntero()+ _archivo.getByteInicio();
        if((puntero + pnumBytes) > finalizacionArchivo)
        {

@@ -24,11 +24,12 @@ public class HandlerCliente implements Runnable{
     private Socket _clientConexion;
     private ServidorSA _sa;
     
-    public HandlerCliente(Socket psocket) 
+    public HandlerCliente(Socket psocket, ServidorSA psa) 
     {
         _clientConexion = psocket;
         _entradaObj = null;
         _salidaObj = null;
+        _sa = psa;
     }
     
     //Se establecen los flujos para la entrada y salida de datos
@@ -84,16 +85,20 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("df recibido");
                 msgSend.setTipoMensaje("df");
-                msgSend.setMensaje("Informacion del Sistema");                
+                msgSend.setMensaje("IP: " + _clientConexion.getInetAddress().getHostAddress() + "\n" +
+                                    "Puerto: " + _clientConexion.getLocalPort() + "\n" +
+                                    "Tamano en bytes: " + _sa.getEstructuraDisco().getTamanoBytes() + "\n" +
+                                    "Espacio usado: " + _sa.getEstructuraDisco().getEspacioUsadoBytes() + "\n" +
+                                    "Espacio libre: " + _sa.getEstructuraDisco().getEspacioLibreBytes() + "\n" +
+                                    "Porcentaje de uso: " + _sa.getEstructuraDisco().getPorcentajeUso()                  
+                                  );                
                 enviarDatos(msgSend);                
             }
-            else if(msgReceive.getTipoMensaje().equals("mount"))
+            else if(msgReceive.getTipoMensaje().equals("unmount"))
             {
-                System.out.println("mount recibido");
-                msgSend.setTipoMensaje("mount");
-                msgSend.setMensaje("Sistema Conectado");                
-                enviarDatos(msgSend);
-            }
+                System.out.println("unmount recibido");
+                closeConexion();                
+            }            
             else if(msgReceive.getTipoMensaje().equals("ls"))
             {
                 System.out.println("ls recibido");
@@ -168,12 +173,20 @@ public class HandlerCliente implements Runnable{
                 msgSend.setMensaje("Archivo Exportado");                
                 enviarDatos(msgSend);
             }
+            else if(msgReceive.getTipoMensaje().equals("salir"))
+            {
+                
+                System.out.println("salir recibido");
+                
+            }         
             else if(msgReceive.getTipoMensaje().equals("terminar"))
             {
+                
                 System.out.println("terminar recibido");
-                msgSend.setTipoMensaje("terminar");
-                msgSend.setMensaje("Servidor cerrado");                
-                enviarDatos(msgSend);
+                if(_sa.getEstructuraControlAcceso().isEmpty())
+                {
+                    System.exit(0);
+                }
             }           
         }
         catch(IOException exeptionES)
@@ -197,13 +210,20 @@ public class HandlerCliente implements Runnable{
     }
 
     @Override
-    public void run() {
-        
+    public void run() {       
+        try
+            {
+                
+                establecerFlujos();
+            }
+             catch(IOException exeptionES)
+            {            
+            } 
         while(true)
         {
             try
             {
-                establecerFlujos();
+                
                 procesarConexion();
             }
              catch(IOException exeptionES)
