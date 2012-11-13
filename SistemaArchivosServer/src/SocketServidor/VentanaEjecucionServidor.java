@@ -174,9 +174,20 @@ public class VentanaEjecucionServidor extends javax.swing.JFrame {
                     try
                     {
                         _server.crearServidor(Integer.parseInt(jTextField1.getText()), 100);
-                        _server.getSa().usarSA(jTextField2.getText());
-                        System.out.println("Servidor Creado");
-                        _server.ejecutarServidor();                   
+                        boolean resultado = _server.getSa().usarSA(jTextField2.getText());
+                        if(resultado)
+                        {
+                            System.out.println("Servidor Creado");
+                            _server.ejecutarServidor();                   
+                        }
+                        else
+                        {
+                            jTextField2.setText("");
+                            JOptionPane.showMessageDialog(this, "Archivo especificado no existe", "Sistema de Archivos", JOptionPane.ERROR_MESSAGE);
+                            
+                        }
+                        
+                        
                     }
                     catch(NumberFormatException exception)
                     {
