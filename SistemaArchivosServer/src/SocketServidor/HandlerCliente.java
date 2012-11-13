@@ -97,6 +97,7 @@ public class HandlerCliente implements Runnable{
             else if(msgReceive.getTipoMensaje().equals("unmount"))
             {
                 System.out.println("unmount recibido");
+                _sa.deshablilitarSA();
                 closeConexion();                
             }            
             else if(msgReceive.getTipoMensaje().equals("ls"))

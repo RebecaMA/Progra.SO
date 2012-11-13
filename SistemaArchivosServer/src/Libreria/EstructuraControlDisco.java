@@ -176,7 +176,7 @@ public class EstructuraControlDisco implements Serializable {
         if(bloqueInicioArch != -1)
         {            
             Archivo estructuraArch = new Archivo(pnombre, pespacioBytes, bloqueInicioArch, numBloques,  getDate()); 
-            estructuraArch.setByteInicio((bloqueInicioArch * _tamanoBloque) + 500);
+            estructuraArch.setByteInicio((bloqueInicioArch * _tamanoBloque) + _tamanoAreaControl);
             _listaArchivos.add(estructuraArch);            
             setBloquesOcupados(bloqueInicioArch, numBloques);
             _espacioUsado = _espacioUsado + numBloques;      

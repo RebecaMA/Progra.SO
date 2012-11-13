@@ -38,7 +38,7 @@ public class ServidorSA {
         _estructura.setNombre(pnombrearchivo);
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
-        _estructura.setTamanoAreaControl(ptamanobloque*pnumerobloques);
+        _estructura.setTamanoAreaControl(700);
         _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
