@@ -96,7 +96,8 @@ public class ClienteSocket {
             respuesta = mensajeRecibido.getMensaje();
         }
         catch(ClassNotFoundException exeptionNotClass)
-        {            
+        {
+            System.out.println("Error parseando el mensaje");
         }      
         return respuesta;
     }

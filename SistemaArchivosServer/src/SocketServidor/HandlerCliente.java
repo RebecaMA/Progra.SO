@@ -102,9 +102,18 @@ public class HandlerCliente implements Runnable{
             else if(msgReceive.getTipoMensaje().equals("ls"))
             {
                 System.out.println("ls recibido");
-                msgSend.setTipoMensaje("ls");
-                msgSend.setMensaje("Informacion del Archivo");                
-                enviarDatos(msgSend);
+                msgSend.setTipoMensaje("ls");                             
+                
+                if(msgReceive.getMensaje().isEmpty())
+                {
+                    msgSend.setMensaje(_sa.LS());
+                    
+                }
+                else
+                {
+                    
+                }
+                enviarDatos(msgSend);                
             }
             else if(msgReceive.getTipoMensaje().equals("rm"))
             {
@@ -117,7 +126,7 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("open recibido");
                 msgSend.setTipoMensaje("open");
-                String parametros[] = msgReceive.getMensaje().split(" ");
+                String parametros[] = msgReceive.getMensaje().split("/");
                 int mensaje = _sa.abrirArchivo(parametros[0], parametros[1]);   
                 msgSend.setMensaje(Integer.toString(mensaje));                
                 enviarDatos(msgSend);

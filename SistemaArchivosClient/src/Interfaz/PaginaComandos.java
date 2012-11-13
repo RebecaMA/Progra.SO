@@ -301,21 +301,24 @@ public class PaginaComandos extends javax.swing.JFrame {
             case 3:
             if(TextFieldCampo1.getText().equals(""))
             {
-                //Ejecutar ls normal
+                mensaje.setMensaje("");
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
             }
             else
             {
-                //ejecutar ls para el archivo especificado
+                mensaje.setMensaje(TextFieldCampo1.getText());
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
             }
             break;
-            case 4: //
+            case 4:
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campo en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
-
+                mensaje.setMensaje(TextFieldCampo1.getText());
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
             }
             break;
             case 5: //
@@ -325,7 +328,28 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-
+                if(findIDConflicto(TextFieldCampo1.getText()))
+                {
+                    JOptionPane.showMessageDialog(this, "ID ya existe", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    mensaje.setMensaje(_nombreUsuario +"/"+ TextFieldCampo2.getText());
+                    int asa = Integer.parseInt(_socket.ejecutarCliente(mensaje));
+                    if(asa == -1)
+                    {
+                        JOptionPane.showMessageDialog(this, "Archivo no existe", "Shell", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if(asa == -2)
+                    {
+                        JOptionPane.showMessageDialog(this, "Archivo esta abierto por algun cliente", "Shell", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                    {
+                        _listaID.add(new IDArch(TextFieldCampo1.getText(), asa));
+                        TextAreaResultado.setText(TextAreaResultado.getText() +"\nArchivo Abierto ID: " + TextFieldCampo1.getText());
+                    }                    
+                }
             }
             break;
             case 6: //
@@ -335,16 +359,42 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
+                if(findIDConflicto(_nombreUsuario))
+                {
+                    try
+                    {
+                        int bytes = Integer.parseInt(TextFieldCampo2.getText());
+                        mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + bytes);                        
+                        TextAreaResultado.setText(TextAreaResultado.getText() + "\nREAD:\n" + _socket.ejecutarCliente(mensaje));
+                    }
+                    catch(NumberFormatException exception)
+                    {
+                        JOptionPane.showMessageDialog(this, "Debe especificar un numero", "Shell", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "ID no ha sido ligado con algun archivo", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
             break;
-            case 7: //
-            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            case 7: //            
+            if(TextFieldCampo1.getText().equals("") || TexTAreaBufferDatos.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
+                if(findIDConflicto(_nombreUsuario))
+                {
+                    mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TexTAreaBufferDatos.getText());                        
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "ID no ha sido ligado con algun archivo", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
             break;
