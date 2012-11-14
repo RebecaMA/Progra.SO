@@ -123,7 +123,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("rm recibido");
                 msgSend.setTipoMensaje("rm");
-                msgSend.setMensaje("Archivo Borrado");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje( _sa.borrarArchivo(parametros[0]));           
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("open"))
@@ -190,7 +191,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("Exportar recibido");
                 msgSend.setTipoMensaje("Exportar");
-                msgSend.setMensaje("Archivo Exportado");                
+                 String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.exportarArchivo(parametros[0]));;                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("salir"))

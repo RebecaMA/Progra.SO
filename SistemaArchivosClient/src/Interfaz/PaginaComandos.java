@@ -450,17 +450,20 @@ public class PaginaComandos extends javax.swing.JFrame {
                 msj = msj + TextFieldCampo1.getText() + "/";
                 msj = msj + _manejadorArchivos._leerArchivo(_file);
                 mensaje.setMensaje(msj);
-                String resultado = _socket.ejecutarCliente(mensaje);                
+                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));             
             }            
             break;
             case 12: //
-            if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
+            if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
-
+                  mensaje.setMensaje(TextFieldCampo1.getText());
+                  String retorno = _socket.ejecutarCliente(mensaje);
+                  TextAreaResultado.setText("Bytes Exportados: " + _manejadorArchivos._escribirArchivo(_file, retorno));
+                 
             }
             break;
             case 13: 
@@ -590,7 +593,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             break;
             case 7: //
             TextFieldCampo1.setEnabled(true);
-            TextFieldCampo2.setEnabled(true);
+            TextFieldCampo2.setEnabled(false);
             TextFieldCampo3.setEnabled(false);
             BotonFileChooser.setEnabled(false);
             TexTAreaBufferDatos.setEnabled(true);

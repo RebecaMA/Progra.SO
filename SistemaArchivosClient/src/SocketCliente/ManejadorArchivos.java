@@ -55,6 +55,7 @@ public class ManejadorArchivos {
 
             try {
                 _escritura.writeBytes(_mensaje);
+                _situacion = _mensaje.length();
                 _escritura.close();
             } catch (IOException ex) {
                 _situacion = -1;

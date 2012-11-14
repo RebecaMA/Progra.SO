@@ -133,7 +133,7 @@ public class ServidorSA {
     }
     
     // Borra el archivo
-    public int borrarArchivo(String pnombreArch)
+    public String borrarArchivo(String pnombreArch)
     {
         if(_estructuraDisco.findArchivo(pnombreArch))
         {
@@ -151,16 +151,16 @@ public class ServidorSA {
                     }
                     
                 }  
-                return 1;
+                return "Archivo Borrado";
             }
             else 
             {
-                return -2;
+                return "Error de borrado archivo";
             }           
         }
         else
         {
-            return -1;
+            return "Error de borrado archivo";
         }       
     }
     
