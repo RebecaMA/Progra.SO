@@ -405,7 +405,16 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-
+                //repos ID Modo NumeroBytes -> Rebe
+                 if(findIDConflicto(TextFieldCampo1.getText()))
+                {
+                    mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TextFieldCampo2.getText()+ "/" + TextFieldCampo3.getText());                        
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "ID no ha sido ligado con algun archivo", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
             }
             break;
             case 9: //
@@ -425,7 +434,8 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-
+                mensaje.setMensaje(TextFieldCampo1.getText());                        
+                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje)); 
             }
             break;
             case 11: //
@@ -573,7 +583,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             break;
             case 6: //
             TextFieldCampo1.setEnabled(true);
-            TextFieldCampo2.setEnabled(false);
+            TextFieldCampo2.setEnabled(true);
             TextFieldCampo3.setEnabled(false);
             BotonFileChooser.setEnabled(false);
             TexTAreaBufferDatos.setEnabled(false);

@@ -59,8 +59,6 @@ public class ServidorSA {
     
     public String deshablilitarSA()
     {
-       // Verificar que no hayan mas clientes
-        // Hay q borrar lo q esta en control de acceso tambn
         getAccesoDatos().crearSA(getEstructuraDisco());
         setEstructuraDisco(null);
         getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());

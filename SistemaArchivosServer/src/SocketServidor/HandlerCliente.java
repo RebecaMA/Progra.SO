@@ -156,7 +156,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("repos recibido");
                 msgSend.setTipoMensaje("repos");
-                msgSend.setMensaje("Archivo reposicionado");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.reposicionarArchivo(parametros[0], parametros[1],Integer.parseInt(parametros[2]))+"");               
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("close"))
@@ -172,7 +173,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("cat recibido");
                 msgSend.setTipoMensaje("cat");
-                msgSend.setMensaje("Archivo Desplegado");                
+                String parametros[] = msgReceive.getMensaje().split(" ");
+                msgSend.setMensaje(_sa.catArchivo(parametros[0]));                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("importar"))
