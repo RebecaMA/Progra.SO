@@ -38,7 +38,7 @@ public class ServidorSA {
         _estructura.setNombre(pnombrearchivo);
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
-        _estructura.setTamanoAreaControl(700);
+        _estructura.setTamanoAreaControl(1400);
         _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
@@ -59,9 +59,7 @@ public class ServidorSA {
     
     public String deshablilitarSA()
     {
-       // Verificar que no hayan mas clientes
-        // Hay q borrar lo q esta en control de acceso tambn
-        getAccesoDatos().crearSA(getEstructuraDisco());
+        getAccesoDatos().DesabilitarSA(getEstructuraDisco());
         setEstructuraDisco(null);
         getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());
         
@@ -135,7 +133,7 @@ public class ServidorSA {
     }
     
     // Borra el archivo
-    public int borrarArchivo(String pnombreArch)
+    public String borrarArchivo(String pnombreArch)
     {
         if(_estructuraDisco.findArchivo(pnombreArch))
         {
@@ -153,16 +151,16 @@ public class ServidorSA {
                     }
                     
                 }  
-                return 1;
+                return "Archivo Borrado";
             }
             else 
             {
-                return -2;
+                return "Error de borrado archivo";
             }           
         }
         else
         {
-            return -1;
+            return "Error de borrado archivo";
         }       
     }
     

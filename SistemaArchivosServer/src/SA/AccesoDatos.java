@@ -5,18 +5,14 @@
 package SA;
 
 import Libreria.EstructuraControlDisco;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,11 +45,12 @@ public class AccesoDatos {
         String _fileDescriptor = "Se creo el disco con exito";
         
         try {
-            FileOutputStream fileOut =  new FileOutputStream(pdisco.getNombre());
-            ObjectOutputStream out =  new ObjectOutputStream(fileOut);
-            out.writeObject(pdisco);
+            File _file = new File(pdisco.getNombre());
+            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
+            ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
+            out.writeObject(pdisco);          
             out.close();
-            fileOut.close();
+            fileOut.close();              
         } catch (IOException ex) {
             _fileDescriptor="Se produjo un error:" + ex;
         }
@@ -62,7 +59,7 @@ public class AccesoDatos {
 
     public boolean usarSA(String pnombre)
     {
-       boolean retorno = true;
+       boolean retorno;
          try
          {
             FileInputStream fileIn =  new FileInputStream(pnombre);
@@ -71,6 +68,7 @@ public class AccesoDatos {
             in.close();
             fileIn.close();
             retorno = true;
+    
         }catch(IOException i)
         {
            retorno = false;
@@ -83,7 +81,28 @@ public class AccesoDatos {
          return retorno;
       
     }
- 
+    
+    
+    
+    
+       public String DesabilitarSA(EstructuraControlDisco pdisco){
+        String _fileDescriptor = "Se creo el disco con exito";
+        
+        try {
+            String retorno = leerArchivo(pdisco.getTamanoAreaControl(), (pdisco.getNumBloques() * pdisco.getTamanoBloque()), pdisco);
+            File _file = new File(pdisco.getNombre());
+            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
+            ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
+            out.writeObject(pdisco);          
+            out.close();
+            fileOut.close();        
+            escribirArchivo(retorno, pdisco.getTamanoAreaControl(), pdisco);
+        } catch (IOException ex) {
+            _fileDescriptor="Se produjo un error:" + ex;
+        }
+    return _fileDescriptor;
+   }
+   
     
    
     // Para leer en un archivo, no en el archivo de disco sino uno  dentro del disco
@@ -129,6 +148,7 @@ public class AccesoDatos {
             try {
                 _escritura.seek(pinicio);
                 _escritura.writeBytes(pescribir);
+                _situacion = pescribir.length();
                 _escritura.close();
             } catch (IOException ex) {
                 _situacion = -1;
