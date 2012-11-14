@@ -218,8 +218,8 @@ public class HandlerCliente implements Runnable{
         System.out.println("Cerrando conexion");
         try
         {
-            _salidaObj.close();
-            _entradaObj.close();
+            //_salidaObj.close();
+            //_entradaObj.close();
             _clientConexion.close();
         }
         catch(IOException exeptionES)
@@ -230,8 +230,7 @@ public class HandlerCliente implements Runnable{
     @Override
     public void run() {       
         try
-            {
-                
+            {                
                 establecerFlujos();
             }
              catch(IOException exeptionES)
@@ -246,6 +245,7 @@ public class HandlerCliente implements Runnable{
              catch(IOException exeptionES)
             {            
             }           
-        }       
+        }     
+        System.out.println("Cerrando Thread");
     }   
 }

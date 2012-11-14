@@ -43,11 +43,11 @@ public class ClienteSocket {
             _ipLocal = InetAddress.getLocalHost().getHostAddress();
             if(_clientConexion == null || !_sistemaMontado)
             {
+                System.out.println("Creando Nueva Conexion");       
                 _clientConexion = new Socket(InetAddress.getByName(pipHost), pport);
                 establecerFlujos();
                 _ipServer = _clientConexion.getInetAddress().getHostName() + ' ' + _clientConexion.getInetAddress().getHostAddress();
-                _sistemaMontado = true;
-                System.out.println(_clientConexion.getInetAddress().getHostName());       
+                _sistemaMontado = true;                
                 String mensaje = "Conexion establecida con: " + _ipServer;
                 return mensaje;
             }
@@ -100,79 +100,7 @@ public class ClienteSocket {
             System.out.println("Error parseando el mensaje");
         }      
         return respuesta;
-    }
-    
-    //Procesa cada una de las solicitudes que lleguen al socket
-    /*private String procesarConexion() throws IOException
-    {
-        Mensaje msgReceive;        
-        try
-        {
-            msgReceive = recibirDatos();
-            
-            if(msgReceive.getTipoMensaje().equals("df"))
-            {
-                System.out.println(msgReceive.getMensaje());                
-            }
-            else if(msgReceive.getTipoMensaje().equals("mount"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("ls"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("rm"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("open"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("read"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("write"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("repos"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("close"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("cat"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("importar"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("exportar"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            }
-            else if(msgReceive.getTipoMensaje().equals("salir"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            } 
-            else if(msgReceive.getTipoMensaje().equals("terminar"))
-            {
-                System.out.println(msgReceive.getMensaje());
-            } 
-        }
-        catch(IOException exeptionES)
-        {            
-        }  
-    }
-    */
-            
+    }    
     
     //Cerrar la conexion existente
     public String closeConexion()
@@ -182,8 +110,8 @@ public class ClienteSocket {
         {
             String mensaje = "Conexion cerrada con: " + _ipServer;
             _sistemaMontado = false;
-            _salidaObj.close();
-            _entradaObj.close();
+            //_salidaObj.close();
+            //_entradaObj.close();
             _clientConexion.close();
             return mensaje;
         }

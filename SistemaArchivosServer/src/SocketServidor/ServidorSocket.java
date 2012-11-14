@@ -42,11 +42,10 @@ public class ServidorSocket {
     public void ejecutarServidor()
     {
         while(true)
-        {
-            Socket clienteConexion;
+        {            
             try
-            {                
-                clienteConexion = _server.accept();         
+            {
+                Socket clienteConexion = _server.accept();                 
                 System.out.println("Nueva Conexion");
                 HandlerCliente client = new HandlerCliente(clienteConexion, getSa());
                 Thread hiloCliente = new Thread(client);
