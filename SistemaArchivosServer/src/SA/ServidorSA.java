@@ -38,7 +38,7 @@ public class ServidorSA {
         _estructura.setNombre(pnombrearchivo);
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
-        _estructura.setTamanoAreaControl(700);
+        _estructura.setTamanoAreaControl(1400);
         _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
@@ -59,7 +59,7 @@ public class ServidorSA {
     
     public String deshablilitarSA()
     {
-        getAccesoDatos().crearSA(getEstructuraDisco());
+        getAccesoDatos().DesabilitarSA(getEstructuraDisco());
         setEstructuraDisco(null);
         getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());
         

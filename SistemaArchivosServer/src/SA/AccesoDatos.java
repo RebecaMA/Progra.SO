@@ -46,13 +46,11 @@ public class AccesoDatos {
         
         try {
             File _file = new File(pdisco.getNombre());
-            FileOutputStream fileOut =  new FileOutputStream(_file,true);            
+            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
             ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
             out.writeObject(pdisco);          
             out.close();
-            fileOut.close();
-
-               
+            fileOut.close();              
         } catch (IOException ex) {
             _fileDescriptor="Se produjo un error:" + ex;
         }
@@ -85,16 +83,25 @@ public class AccesoDatos {
     }
     
     
-    public void desabilitarSA(EstructuraControlDisco _estructura)
-    {
+    
+    
+       public String DesabilitarSA(EstructuraControlDisco pdisco){
+        String _fileDescriptor = "Se creo el disco con exito";
+        
         try {
-            RandomAccessFile _escritura = new RandomAccessFile(_estructura.getNombre(),"rw");
-            //ObjectOutputStream out =  new ObjectOutputStream(_escritura);
-           // _escritura.wri
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(AccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            String retorno = leerArchivo(pdisco.getTamanoAreaControl(), (pdisco.getNumBloques() * pdisco.getTamanoBloque()), pdisco);
+            File _file = new File(pdisco.getNombre());
+            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
+            ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
+            out.writeObject(pdisco);          
+            out.close();
+            fileOut.close();        
+            escribirArchivo(retorno, pdisco.getTamanoAreaControl(), pdisco);
+        } catch (IOException ex) {
+            _fileDescriptor="Se produjo un error:" + ex;
         }
-    }
+    return _fileDescriptor;
+   }
    
     
    
