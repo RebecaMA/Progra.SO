@@ -59,6 +59,7 @@ public class ClienteSocket {
         }
         catch(IOException excepcionES)
         {
+            System.out.println("Conectar catch: "+excepcionES.getMessage());
             String mensaje = "Error al conectar con Host, verifique datos de entrada";
             return mensaje;
         }       
@@ -83,6 +84,7 @@ public class ClienteSocket {
         }
         catch(IOException exeptionES)
         {            
+            System.out.println("Enviar catch: "+exeptionES.getMessage());
         }       
     }
     
@@ -97,6 +99,7 @@ public class ClienteSocket {
         }
         catch(ClassNotFoundException exeptionNotClass)
         {
+            System.out.println("RecibirDatos catch: "+exeptionNotClass.getMessage());
             System.out.println("Error parseando el mensaje");
         }      
         return respuesta;
@@ -110,8 +113,8 @@ public class ClienteSocket {
         {
             String mensaje = "Conexion cerrada con: " + _ipServer;
             _sistemaMontado = false;
-            //_salidaObj.close();
-            //_entradaObj.close();
+            _salidaObj.close();
+            _entradaObj.close();
             _clientConexion.close();
             return mensaje;
         }
@@ -132,6 +135,7 @@ public class ClienteSocket {
         }
         catch(IOException exeptionES)
         {            
+            System.out.println("Ejecutar cliente catch: "+exeptionES.getMessage());            
         }     
         return respuesta;
     }       

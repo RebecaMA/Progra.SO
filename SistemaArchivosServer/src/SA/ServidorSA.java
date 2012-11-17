@@ -14,9 +14,7 @@ import java.util.*;
  */
 public class ServidorSA {
     
-    //Atributos
-    
-  
+    //Atributos 
 
     public EstructuraControlDisco _estructuraDisco;
     private ArrayList<ControlAcceso> _estructuraControlAcceso;
@@ -309,7 +307,7 @@ public class ServidorSA {
          retorno += "Fecha Modificacion: " + _archivo.getFechaModificacion() + "\n";
          
          if(findArchivoAbierto(_archivo.getNombre())){
-        ControlAcceso _acceso = getEstructuraControlAcceso().get(i);
+         ControlAcceso _acceso = getEstructuraControlAcceso().get(i);
            retorno += "Archivo Abierto por: " +  _acceso.getNombreUsuario() + "\n";
          }  
          }}

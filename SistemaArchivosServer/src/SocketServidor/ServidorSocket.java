@@ -52,7 +52,8 @@ public class ServidorSocket {
                 hiloCliente.start();
             }
             catch(IOException exeptionES)
-            {                
+            {       
+                 System.out.println("Server catch: "+exeptionES.getMessage());
             }                          
         }            
     }
