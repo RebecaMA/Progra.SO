@@ -295,7 +295,8 @@ public class PaginaComandos extends javax.swing.JFrame {
             else
             {
                 _socket.ejecutarCliente(mensaje);                
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\nConexion cerrada con: "+ _socket.closeConexion());
+                _socket._sistemaMontado = false;
+                //TextAreaResultado.setText(TextAreaResultado.getText() +"\nConexion cerrada con: "+ _socket.closeConexion());
                 
             }            
             break;

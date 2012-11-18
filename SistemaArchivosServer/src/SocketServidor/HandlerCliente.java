@@ -29,9 +29,14 @@ public class HandlerCliente implements Runnable{
     public HandlerCliente(Socket psocket, ServidorSA psa) 
     {
         _clientConexion = psocket;
-        _entradaObj = null;
-        _salidaObj = null;
         _banderaThread = true;
+        try
+        {                
+            establecerFlujos();
+        }
+        catch(IOException exeptionES)
+        {            
+        }
         _sa = psa;
     }
     
@@ -83,6 +88,12 @@ public class HandlerCliente implements Runnable{
         try
         {
             msgReceive = recibirDatos();
+            System.out.println(_clientConexion.isBound());
+            System.out.println(_clientConexion.isClosed());
+            System.out.println(_clientConexion.isConnected());
+            System.out.println(_clientConexion.isInputShutdown());
+            System.out.println(_clientConexion.isOutputShutdown());
+            System.out.println(_clientConexion == null);
             System.out.println("Mensaje recibido");
             
             if(msgReceive.getTipoMensaje().equals("df"))
@@ -233,14 +244,7 @@ public class HandlerCliente implements Runnable{
     }
 
     @Override
-    public void run() {       
-        try
-            {                
-                establecerFlujos();
-            }
-             catch(IOException exeptionES)
-            {            
-            } 
+    public void run() {               
         while(_banderaThread)
         {
             try
