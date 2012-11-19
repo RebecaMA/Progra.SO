@@ -46,7 +46,7 @@ public class AccesoDatos {
         
         try {
             File _file = new File(pdisco.getNombre());
-            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
+            FileOutputStream fileOut =  new FileOutputStream(_file);            
             ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
             out.writeObject(pdisco);          
             out.close();
@@ -91,7 +91,7 @@ public class AccesoDatos {
         try {
             String retorno = leerArchivo(pdisco.getTamanoAreaControl(), (pdisco.getNumBloques() * pdisco.getTamanoBloque()), pdisco);
             File _file = new File(pdisco.getNombre());
-            FileOutputStream fileOut =  new FileOutputStream(_file,false);            
+            FileOutputStream fileOut =  new FileOutputStream(_file);            
             ObjectOutputStream out =  new ObjectOutputStream(fileOut);              
             out.writeObject(pdisco);          
             out.close();

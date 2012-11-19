@@ -36,7 +36,7 @@ public class ServidorSA {
         _estructura.setNombre(pnombrearchivo);
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
-        _estructura.setTamanoAreaControl(1400);
+        _estructura.setTamanoAreaControl(2000);
         _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
@@ -185,8 +185,8 @@ public class ServidorSA {
        else 
        {
           retorno = _accesoDatos.leerArchivo(puntero, pnumBytes,_estructuraDisco);
-          _controlAcceso.setPosicionPuntero(_controlAcceso.getPosicionPuntero() +retorno.length());
-          _estructuraControlAcceso.set(indexcontrolacceso, _controlAcceso);
+          _estructuraControlAcceso.get(indexcontrolacceso).setPosicionPuntero(_controlAcceso.getPosicionPuntero() +retorno.length());
+         
           
        }
         return retorno;
@@ -244,7 +244,7 @@ public class ServidorSA {
             posicion = pnumeroBytes;
         
         }else if(pmodo.equals("fin")){
-            posicion = _archivo.getEspacioAsignado() - pnumeroBytes;
+            posicion = _archivo.getEspacioAsignado() - pnumeroBytes -1;
         } 
         
         if(posicion < 0) {
@@ -307,7 +307,8 @@ public class ServidorSA {
          retorno += "Fecha Modificacion: " + _archivo.getFechaModificacion() + "\n";
          
          if(findArchivoAbierto(_archivo.getNombre())){
-         ControlAcceso _acceso = getEstructuraControlAcceso().get(i);
+             int index = buscarIndice(_archivo.getNombre());
+         ControlAcceso _acceso = getEstructuraControlAcceso().get(index);
            retorno += "Archivo Abierto por: " +  _acceso.getNombreUsuario() + "\n";
          }  
          }}
@@ -458,6 +459,27 @@ public class ServidorSA {
         
         return _retorno;
     }
+       
+       public int buscarIndice(String pnombre)
+       {
+       int _contador = 0;
+        Boolean _boolean = true;
+
+     
+       
+        while(_estructuraControlAcceso.size() > _contador && _boolean)
+        {
+            if(_estructuraControlAcceso.get(_contador).getNombreArch().equals(pnombre))
+            {
+             _boolean = false;
+            }
+            else {
+                _contador++;
+            }      
+        }
+        
+        return _contador;
+       }
   
      
      

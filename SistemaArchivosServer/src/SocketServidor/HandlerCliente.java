@@ -80,7 +80,7 @@ public class HandlerCliente implements Runnable{
     }
     
     //Procesa cada una de las solicitudes que lleguen al socket
-    private void procesarConexion() throws IOException
+      private void procesarConexion() throws IOException
     {
         System.out.println("Procesando Conexion");
         Mensaje msgReceive;
@@ -88,12 +88,6 @@ public class HandlerCliente implements Runnable{
         try
         {
             msgReceive = recibirDatos();
-            System.out.println(_clientConexion.isBound());
-            System.out.println(_clientConexion.isClosed());
-            System.out.println(_clientConexion.isConnected());
-            System.out.println(_clientConexion.isInputShutdown());
-            System.out.println(_clientConexion.isOutputShutdown());
-            System.out.println(_clientConexion == null);
             System.out.println("Mensaje recibido");
             
             if(msgReceive.getTipoMensaje().equals("df"))
@@ -113,9 +107,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("unmount recibido");
                 _sa.deshablilitarSA();
-                msgSend.setMensaje("realizado");
-                enviarDatos(msgSend);                
-                _banderaThread = false;                
+                _banderaThread = false;
+                closeConexion();                
             }            
             else if(msgReceive.getTipoMensaje().equals("ls"))
             {
@@ -137,7 +130,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("rm recibido");
                 msgSend.setTipoMensaje("rm");
-                msgSend.setMensaje("Archivo Borrado");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje( _sa.borrarArchivo(parametros[0]));           
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("open"))
@@ -170,7 +164,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("repos recibido");
                 msgSend.setTipoMensaje("repos");
-                msgSend.setMensaje("Archivo reposicionado");                
+                String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.reposicionarArchivo(parametros[0], parametros[1],Integer.parseInt(parametros[2]))+"");               
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("close"))
@@ -186,7 +181,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("cat recibido");
                 msgSend.setTipoMensaje("cat");
-                msgSend.setMensaje("Archivo Desplegado");                
+                String parametros[] = msgReceive.getMensaje().split(" ");
+                msgSend.setMensaje(_sa.catArchivo(parametros[0]));                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("importar"))
@@ -202,7 +198,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("Exportar recibido");
                 msgSend.setTipoMensaje("Exportar");
-                msgSend.setMensaje("Archivo Exportado");                
+                 String parametros[] = msgReceive.getMensaje().split("/");
+                msgSend.setMensaje(_sa.exportarArchivo(parametros[0]));;                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("salir"))
@@ -217,16 +214,15 @@ public class HandlerCliente implements Runnable{
                 System.out.println("terminar recibido");
                 if(_sa.getEstructuraControlAcceso().isEmpty())
                 {
-                    _banderaThread = false;
                     System.exit(0);
                 }
             }           
         }
         catch(IOException exeptionES)
         {            
-            System.out.println("Procesar catch: " + exeptionES.getMessage()); 
         }  
     }
+    
     
     //Cerrar la conexion existente
     public void closeConexion()

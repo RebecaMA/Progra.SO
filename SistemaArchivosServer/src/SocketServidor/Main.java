@@ -28,10 +28,7 @@ public class Main {
         VentanaEjecucionServidor ventana = new VentanaEjecucionServidor();
         ventana.setVisible(true);
         
-   //     ServidorSA _servidor = new ServidorSA();
-   //     System.out.println(_servidor.usarSA("prueba.txt"));
-   
-         
+
        
 
          
