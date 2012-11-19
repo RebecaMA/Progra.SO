@@ -58,7 +58,7 @@ public class ServidorSA {
     public String deshablilitarSA()
     {
         getAccesoDatos().DesabilitarSA(getEstructuraDisco());
-        setEstructuraDisco(null);
+        //setEstructuraDisco(null);
         getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());
         
 

@@ -10,6 +10,8 @@ import SA.ServidorSA;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 
@@ -41,15 +43,17 @@ public class ServidorSocket {
        
     public void ejecutarServidor()
     {
+        ExecutorService executor = Executors.newCachedThreadPool();
         while(true)
         {            
             try
             {
                 Socket clienteConexion = _server.accept();                 
                 System.out.println("Nueva Conexion");
-                HandlerCliente client = new HandlerCliente(clienteConexion, getSa());
-                Thread hiloCliente = new Thread(client);
-                hiloCliente.start();
+                executor.execute(new HandlerCliente(clienteConexion, getSa()));
+                //HandlerCliente client = new HandlerCliente(clienteConexion, getSa());
+                //Thread hiloCliente = new Thread(client);
+                //hiloCliente.start();
             }
             catch(IOException exeptionES)
             {       

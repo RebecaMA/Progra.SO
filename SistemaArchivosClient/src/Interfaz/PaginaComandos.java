@@ -5,14 +5,11 @@
 package Interfaz;
 
 import Libreria.*;
-
-import SocketCliente.ClienteSocket;
-import javax.swing.JOptionPane;
-
 import SocketCliente.*;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,7 +23,9 @@ public class PaginaComandos extends javax.swing.JFrame {
     
     String _nombreUsuario;
 
-    ClienteSocket _socket;
+    ArrayList<ClienteSocket> _listaConexiones;
+    int _socketActivo;
+    boolean _banderaConexion;
     File _file;
     ManejadorArchivos _manejadorArchivos;
     ArrayList<IDArch> _listaID;
@@ -39,7 +38,9 @@ public class PaginaComandos extends javax.swing.JFrame {
         initComponents();
         _nombreUsuario = pnombreUsuario;
         LabelNombreUsuario.setText(pnombreUsuario);  
-        _socket = new ClienteSocket();
+        _listaConexiones = new ArrayList<ClienteSocket>();
+        _socketActivo = -1;
+        _banderaConexion = false;
         _listaID = new ArrayList<IDArch>(50);
         
         LabelNombreUsuario.setText(pnombreUsuario);  
@@ -261,13 +262,13 @@ public class PaginaComandos extends javax.swing.JFrame {
         switch(indiceOperacion)
         {
             case 0:
-            if(!_socket._sistemaMontado)
+            if(!_banderaConexion)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
-            {                
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+  _socket.ejecutarCliente(mensaje));                
+            {
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+  _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));                
             }
             break;
             case 1:
@@ -279,35 +280,71 @@ public class PaginaComandos extends javax.swing.JFrame {
             {
                 try
                 {
-                    TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+_socket.conectarServidor(TextFieldCampo1.getText(), Integer.parseInt(TextFieldCampo2.getText())));                    
+                    if(!_banderaConexion)
+                    {
+                        int resultado = findConexion(TextFieldCampo1.getText(), Integer.parseInt(TextFieldCampo2.getText()));
+                        if (resultado == -1)
+                        {                        
+                            _socketActivo = _listaConexiones.size();
+                            _listaConexiones.add(new ClienteSocket());
+                            boolean result = _listaConexiones.get(_socketActivo).conectarServidor(TextFieldCampo1.getText(), Integer.parseInt(TextFieldCampo2.getText()));
+                            if(result)
+                            {
+                                String ip = "Conexion establecida con: " + _listaConexiones.get(_socketActivo)._ipServer + " Puerto=" + _listaConexiones.get(_socketActivo)._portServer;
+                                _banderaConexion = true;
+                                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ip);                    
+                            }
+                            else
+                            {                                
+                                _listaConexiones.remove(_socketActivo);                                
+                                _socketActivo--;
+                                TextAreaResultado.setText(TextAreaResultado.getText() +"\nError al conectar con Host, verifique datos de entrada\n");                    
+                            }                            
+                        }                    
+                        else
+                        {
+                            _socketActivo = resultado;
+                            _banderaConexion = true;
+                            TextAreaResultado.setText(TextAreaResultado.getText() +"\nConexion reestablecida con: " + _listaConexiones.get(_socketActivo)._ipServer +" Puerto="+ _listaConexiones.get(_socketActivo)._portServer);                    
+                        }
+
+                    }
+                    else
+                    {
+                        _banderaConexion = true;
+                        TextAreaResultado.setText(TextAreaResultado.getText() +"\nConexion reestablecida con: " + _listaConexiones.get(_socketActivo)._ipServer +" Puerto="+ _listaConexiones.get(_socketActivo)._portServer);                                      
+                    
+                    }
+                                
                 }
                 catch(NumberFormatException exception)
                 {
                     JOptionPane.showMessageDialog(this, "Debe especificar un numero en Puerto", "Shell", JOptionPane.ERROR_MESSAGE);
-                }                                    
+                }                
             }
             break;
             case 2:
-            if(!_socket._sistemaMontado)
+            if(_socketActivo == -1)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
             }
             else
-            {
-                _socket.ejecutarCliente(mensaje);
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.closeConexion());
+            {                
+                _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
+                _banderaConexion = false;                
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\nSistema Desconectado");
             }            
             break;
             case 3:
             if(TextFieldCampo1.getText().equals(""))
             {
                 mensaje.setMensaje("");
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));
             }
             else
             {
                 mensaje.setMensaje(TextFieldCampo1.getText());
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));
             }
             break;
             case 4:
@@ -318,7 +355,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             else
             {
                 mensaje.setMensaje(TextFieldCampo1.getText());
-                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _socket.ejecutarCliente(mensaje));
+                TextAreaResultado.setText(TextAreaResultado.getText() +"\n"+ _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));
             }
             break;
             case 5: //
@@ -335,7 +372,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                 else
                 {
                     mensaje.setMensaje(_nombreUsuario +"/"+ TextFieldCampo2.getText());
-                    int asa = Integer.parseInt(_socket.ejecutarCliente(mensaje));
+                    int asa = Integer.parseInt(_listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));
                     if(asa == -1)
                     {
                         JOptionPane.showMessageDialog(this, "Archivo no existe", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -365,7 +402,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                     {
                         int bytes = Integer.parseInt(TextFieldCampo2.getText());                        
                         mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + bytes);                        
-                        TextAreaResultado.setText(TextAreaResultado.getText() + "\nREAD:\n" + _socket.ejecutarCliente(mensaje));
+                        TextAreaResultado.setText(TextAreaResultado.getText() + "\nREAD:\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));
                     }
                     catch(NumberFormatException exception)
                     {
@@ -389,7 +426,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                 if(findIDConflicto(TextFieldCampo1.getText()))
                 {
                     mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TexTAreaBufferDatos.getText());                        
-                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));                    
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));                    
                 }
                 else
                 {
@@ -409,7 +446,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                  if(findIDConflicto(TextFieldCampo1.getText()))
                 {
                     mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TextFieldCampo2.getText()+ "/" + TextFieldCampo3.getText());                        
-                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));                    
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));                    
                 }
                 else
                 {
@@ -435,7 +472,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             else
             {
                 mensaje.setMensaje(TextFieldCampo1.getText());                        
-                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje)); 
+                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje)); 
             }
             break;
             case 11: //
@@ -450,7 +487,7 @@ public class PaginaComandos extends javax.swing.JFrame {
                 msj = msj + TextFieldCampo1.getText() + "/";
                 msj = msj + _manejadorArchivos._leerArchivo(_file);
                 mensaje.setMensaje(msj);
-                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _socket.ejecutarCliente(mensaje));             
+                TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));             
             }            
             break;
             case 12: //
@@ -461,34 +498,34 @@ public class PaginaComandos extends javax.swing.JFrame {
             else
             {
                   mensaje.setMensaje(TextFieldCampo1.getText());
-                  String retorno = _socket.ejecutarCliente(mensaje);
+                  String retorno = _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                   TextAreaResultado.setText("Bytes Exportados: " + _manejadorArchivos._escribirArchivo(_file, retorno));
                  
             }
             break;
             case 13: 
-            if(!_socket._sistemaMontado)
+            if(_socketActivo == -1)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
             }
             else
             {
-                _socket.ejecutarCliente(mensaje);
+                _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                 System.out.println(mensaje.getTipoMensaje());
                System.exit(0);
             } 
 
             break;
             case 14:
-             if(!_socket._sistemaMontado)
+             if(_socketActivo == -1)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
             }
             else
             {
-                _socket.ejecutarCliente(mensaje);
+                _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                 System.out.println(mensaje.getTipoMensaje());
-               System.exit(0);
+                System.exit(0);
             }  
             break;
         };
@@ -671,6 +708,20 @@ public class PaginaComandos extends javax.swing.JFrame {
             if(_listaID.get(i).getId().equals(pid))
             {                
                 resultado = true;
+                break;
+            }
+        }        
+        return resultado;
+    }
+    
+    private int findConexion(String pip, int pport)
+    {
+        int resultado = -1;
+        for(int i = 0; i < _listaConexiones.size(); i++)
+        {            
+            if(_listaConexiones.get(i)._ipServer.equals(pip) && _listaConexiones.get(i)._portServer == pport)
+            {                
+                resultado = i;
                 break;
             }
         }        

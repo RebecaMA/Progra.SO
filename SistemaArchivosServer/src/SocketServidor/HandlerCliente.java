@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,19 +25,19 @@ public class HandlerCliente implements Runnable{
     private ObjectInputStream _entradaObj;
     private ObjectOutputStream _salidaObj;   
     private Socket _clientConexion;
-    private ServidorSA _sa;
-    private boolean _banderaThread;
+    private ServidorSA _sa;        
             
     public HandlerCliente(Socket psocket, ServidorSA psa) 
     {
-        _clientConexion = psocket;
-        _banderaThread = true;
+        _clientConexion = psocket;        
         try
-        {                
+        {    
             establecerFlujos();
         }
         catch(IOException exeptionES)
-        {            
+        {
+            System.out.println("Crear thread catch: "+exeptionES.getMessage()); 
+            Logger.getLogger(HandlerCliente.class.getName()).log(Level.SEVERE, null, exeptionES);
         }
         _sa = psa;
     }
@@ -73,7 +75,7 @@ public class HandlerCliente implements Runnable{
             mensajeRecibido = (Mensaje) _entradaObj.readObject();    
         }
         catch(ClassNotFoundException exeptionNotClass)
-        {   
+        {           
             System.out.println("Error con Mensaje");
         }      
         return mensajeRecibido;
@@ -106,9 +108,10 @@ public class HandlerCliente implements Runnable{
             else if(msgReceive.getTipoMensaje().equals("unmount"))
             {
                 System.out.println("unmount recibido");
-                _sa.deshablilitarSA();
-                _banderaThread = false;
-                closeConexion();                
+                msgSend.setTipoMensaje("unmount");
+                _sa.deshablilitarSA();                     
+                msgSend.setMensaje("Desconectando");                
+                enviarDatos(msgSend); 
             }            
             else if(msgReceive.getTipoMensaje().equals("ls"))
             {
@@ -205,25 +208,25 @@ public class HandlerCliente implements Runnable{
             else if(msgReceive.getTipoMensaje().equals("salir"))
             {
                 
-                System.out.println("salir recibido");
+                System.out.println("salir recibido");                
+                _sa.deshablilitarSA();  
                 
             }         
             else if(msgReceive.getTipoMensaje().equals("terminar"))
             {
                 
-                System.out.println("terminar recibido");
-                if(_sa.getEstructuraControlAcceso().isEmpty())
-                {
-                    System.exit(0);
-                }
+                System.out.println("terminar recibido");               
+                _sa.deshablilitarSA();                     
+                System.exit(0);
             }           
         }
         catch(IOException exeptionES)
-        {            
+        {
+            System.out.println("Procesar Conexion catch: "+exeptionES.getMessage()); 
+            Logger.getLogger(HandlerCliente.class.getName()).log(Level.SEVERE, null, exeptionES);
         }  
     }
-    
-    
+      
     //Cerrar la conexion existente
     public void closeConexion()
     {
@@ -238,10 +241,10 @@ public class HandlerCliente implements Runnable{
         {            
         }            
     }
-
+   
     @Override
-    public void run() {               
-        while(_banderaThread)
+    public void run() {         
+        while(true)
         {
             try
             {                
@@ -249,8 +252,9 @@ public class HandlerCliente implements Runnable{
             }
              catch(IOException exeptionES)
             {            
+                System.out.println("Run thread catch: "+exeptionES.getMessage()); 
+                Logger.getLogger(HandlerCliente.class.getName()).log(Level.SEVERE, null, exeptionES);
             }           
-        }     
-        System.out.println("Cerrando Thread");
+        }       
     }   
 }

@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import Libreria.Mensaje;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -23,45 +25,34 @@ public class ClienteSocket {
     private ObjectInputStream _entradaObj;
     private ObjectOutputStream _salidaObj;    
     private static Socket _clientConexion;    
-    public Boolean _sistemaMontado;
     public String _ipServer;
-    public String _ipLocal;
+    public int _portServer;
+  
     
     
     //Metodos 
     
     public ClienteSocket()
     {
-        _sistemaMontado = false;
     }
     
     //Se hace la conexion con el servidor
     
-    public String conectarServidor(String pipHost, int pport) 
+    public Boolean conectarServidor(String pipHost, int pport) 
     {        
-        try{
-            _ipLocal = InetAddress.getLocalHost().getHostAddress();
-            if(_clientConexion == null || !_sistemaMontado)
-            {
-                System.out.println("Creando Nueva Conexion");       
-                _clientConexion = new Socket(InetAddress.getByName(pipHost), pport);
-                establecerFlujos();
-                _ipServer = _clientConexion.getInetAddress().getHostName() + ' ' + _clientConexion.getInetAddress().getHostAddress();
-                _sistemaMontado = true;                
-                String mensaje = "Conexion establecida con: " + _ipServer;
-                return mensaje;
-            }
-            else
-            {
-                String mensaje = "Conexion establecida con: " + _ipServer;
-                return mensaje;
-            }
+        try{            
+
+            System.out.println("Creando Nueva Conexion");       
+            _clientConexion = new Socket(InetAddress.getByName(pipHost), pport);                
+            _ipServer = pipHost;
+            _portServer = pport;
+            establecerFlujos();
+            return true;            
         }
         catch(IOException excepcionES)
         {
-            System.out.println("Conectar catch: "+excepcionES.getMessage());
-            String mensaje = "Error al conectar con Host, verifique datos de entrada";
-            return mensaje;
+            System.out.println("Conectar catch: "+excepcionES.getMessage());            
+            return false;
         }       
     }
     
@@ -80,7 +71,6 @@ public class ClienteSocket {
         {
             _salidaObj.writeObject(pmensaje);
             _salidaObj.flush();
-            System.out.println("mensaje enviado");
         }
         catch(IOException exeptionES)
         {            
@@ -104,26 +94,7 @@ public class ClienteSocket {
         }      
         return respuesta;
     }    
-    
-    //Cerrar la conexion existente
-    public String closeConexion()
-    {
-        System.out.println("Cerrando conexion");
-        try
-        {
-            String mensaje = "Conexion cerrada con: " + _ipServer;
-            _sistemaMontado = false;
-            _salidaObj.close();
-            _entradaObj.close();
-            _clientConexion.close();
-            return mensaje;
-        }
-        catch(IOException exeptionES)
-        {            
-            return "Error de IO";
-        }            
-    }
-    
+        
     public String ejecutarCliente(Mensaje pmensaje)
     {
         String respuesta = "";
@@ -135,7 +106,8 @@ public class ClienteSocket {
         }
         catch(IOException exeptionES)
         {            
-            System.out.println("Ejecutar cliente catch: "+exeptionES.getMessage());            
+            System.out.println("Ejecutar cliente catch: "+exeptionES.getMessage()); 
+            Logger.getLogger(ClienteSocket.class.getName()).log(Level.SEVERE, null, exeptionES);
         }     
         return respuesta;
     }       
