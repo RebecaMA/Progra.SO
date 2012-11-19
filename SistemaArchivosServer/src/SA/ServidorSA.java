@@ -55,14 +55,10 @@ public class ServidorSA {
     }
     
     
-    public String deshablilitarSA()
+    public String deshablilitarSA(String pnombreshell)
     {
         getAccesoDatos().DesabilitarSA(getEstructuraDisco());
-        //setEstructuraDisco(null);
-        getEstructuraControlAcceso().removeAll(getEstructuraControlAcceso());
-        
-
-        
+         borrarAccesoControl(pnombreshell);
         return "Mensaje";
     }
     
@@ -481,7 +477,21 @@ public class ServidorSA {
         return _contador;
        }
   
-     
+     //
+       public void borrarAccesoControl(String pnombre)
+       {
+           int largo = _estructuraControlAcceso.size();
+           int i = 0;
+           while( i<largo)
+           {
+               if(_estructuraControlAcceso.get(i).getNombreUsuario().equals(pnombre))
+               {
+                   _estructuraControlAcceso.remove(i);
+               }
+               largo = _estructuraControlAcceso.size();
+               i++;
+           }
+       }
      
      // Get y Setters
       /**

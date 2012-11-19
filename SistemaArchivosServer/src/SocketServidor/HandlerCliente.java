@@ -109,7 +109,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("unmount recibido");
                 msgSend.setTipoMensaje("unmount");
-                _sa.deshablilitarSA();                     
+                String parametros[] = msgReceive.getMensaje().split("/");
+                _sa.deshablilitarSA(parametros[0]);                     
                 msgSend.setMensaje("Desconectando");                
                 enviarDatos(msgSend); 
             }            
@@ -208,15 +209,17 @@ public class HandlerCliente implements Runnable{
             else if(msgReceive.getTipoMensaje().equals("salir"))
             {
                 
-                System.out.println("salir recibido");                
-                _sa.deshablilitarSA();  
+                System.out.println("salir recibido");  
+                String parametros[] = msgReceive.getMensaje().split("/");
+                _sa.deshablilitarSA(parametros[0]);  
                 
             }         
             else if(msgReceive.getTipoMensaje().equals("terminar"))
             {
                 
-                System.out.println("terminar recibido");               
-                _sa.deshablilitarSA();                     
+                System.out.println("terminar recibido"); 
+                String parametros[] = msgReceive.getMensaje().split("/");
+                _sa.deshablilitarSA(parametros[0]);                   
                 System.exit(0);
             }           
         }

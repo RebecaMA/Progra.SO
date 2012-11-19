@@ -324,18 +324,23 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 2:
-            if(_socketActivo == -1)
+             if(!_banderaConexion)
             {
-                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
-            {                
+            {             
+                mensaje.setMensaje(_nombreUsuario);
                 _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                 _banderaConexion = false;                
                 TextAreaResultado.setText(TextAreaResultado.getText() +"\nSistema Desconectado");
             }            
             break;
             case 3:
+            if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 mensaje.setMensaje("");
@@ -348,6 +353,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 4:
+             if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campo en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -359,6 +368,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 5: //
+                if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -390,6 +403,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 6: //
+            if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -416,7 +433,11 @@ public class PaginaComandos extends javax.swing.JFrame {
 
             }
             break;
-            case 7: //            
+            case 7: //
+             if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals("") || TexTAreaBufferDatos.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -436,13 +457,16 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 8: //
+              if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals("") || TextFieldCampo2.getText().equals("") || TextFieldCampo2.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
-                //repos ID Modo NumeroBytes -> Rebe
                  if(findIDConflicto(TextFieldCampo1.getText()))
                 {
                     mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "/" + TextFieldCampo2.getText()+ "/" + TextFieldCampo3.getText());                        
@@ -455,6 +479,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 9: //
+             if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -465,6 +493,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 10: //
+              if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -476,6 +508,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 11: //
+                 if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -491,6 +527,10 @@ public class PaginaComandos extends javax.swing.JFrame {
             }            
             break;
             case 12: //
+             if(!_banderaConexion)
+            {
+                JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
+            }else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
@@ -504,12 +544,13 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             break;
             case 13: 
-            if(_socketActivo == -1)
+              if(_socketActivo == -1)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);                
             }
             else
             {
+                mensaje.setMensaje(_nombreUsuario);
                 _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                 System.out.println(mensaje.getTipoMensaje());
                System.exit(0);
@@ -523,6 +564,7 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
+                mensaje.setMensaje(_nombreUsuario);
                 _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje);
                 System.out.println(mensaje.getTipoMensaje());
                 System.exit(0);
