@@ -101,7 +101,7 @@ public class HandlerCliente implements Runnable{
                                     "Tamano en bytes: " + _sa.getEstructuraDisco().getTamanoBytes() + "\n" +
                                     "Espacio usado: " + _sa.getEstructuraDisco().getEspacioUsadoBytes() + "\n" +
                                     "Espacio libre: " + _sa.getEstructuraDisco().getEspacioLibreBytes() + "\n" +
-                                    "Porcentaje de uso: " + _sa.getEstructuraDisco().getPorcentajeUso() + "%"                  
+                                    "Porcentaje de uso: " + _sa.getEstructuraDisco().getPorcentajeUso()                  
                                   );                
                 enviarDatos(msgSend);                
             }

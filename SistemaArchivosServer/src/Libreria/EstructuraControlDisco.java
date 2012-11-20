@@ -280,9 +280,8 @@ public class EstructuraControlDisco implements Serializable {
         return ((_tamanoAreaControl + _numBloques) -_espacioUsado) * _tamanoBloque;
     }
     
-    public double getPorcentajeUso()
+    public int getPorcentajeUso()
     {
-        double porcentaje = _espacioUsado * 100 / (_tamanoAreaControl + _numBloques);
-        return  porcentaje;
+        return _espacioUsado * 100 / (_tamanoAreaControl + _numBloques);
     }    
 }
