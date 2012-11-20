@@ -36,7 +36,7 @@ public class ServidorSA {
         _estructura.setNombre(pnombrearchivo);
         _estructura.setNumBloques(pnumerobloques);
         _estructura.setTamanoBloque(ptamanobloque);
-        _estructura.setTamanoAreaControl(2000);
+        _estructura.setTamanoAreaControl(10000);
         _estructura.setListaBloquesLibres(pnumerobloques);
         
         getAccesoDatos().crearSA(_estructura);
@@ -334,13 +334,24 @@ public class ServidorSA {
     
     /// Exportar Archivo
     
-    public String exportarArchivo(String pnombreArchivo){
+     public String exportarArchivo(String pnombreArchivo){
         String mensajeRetorno;
         setAccesoDatos(_accesoDatos);
+
         int indexcontroldisco = buscarArchivoEstructuraDisco(pnombreArchivo);
-        Archivo _archivo = _estructuraDisco.getListaArchivos().get(indexcontroldisco);
-        mensajeRetorno = _accesoDatos.leerArchivo(_archivo.getByteInicio(),_archivo.getEspacioAsignado(), _estructuraDisco);    
+        if(indexcontroldisco >
+        _estructuraDisco.getListaArchivos().size() || indexcontroldisco <0)
+        {
+            return "Error de archivo";
+        }
+        else{
+        Archivo _archivo =
+        _estructuraDisco.getListaArchivos().get(indexcontroldisco);
+        mensajeRetorno =
+        _accesoDatos.leerArchivo(_archivo.getByteInicio(),_archivo.getEspacioAsignado(),
+        _estructuraDisco);
         return mensajeRetorno;
+        }
     }
     
     //Cat Archivo

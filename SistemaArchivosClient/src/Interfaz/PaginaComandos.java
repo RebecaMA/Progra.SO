@@ -86,7 +86,7 @@ public class PaginaComandos extends javax.swing.JFrame {
         LabelNombreUsuario.setText("Usuario");
 
         ComboBoxComando.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        ComboBoxComando.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "df", "mount", "unmount", "ls", "rm", "open", "read", "write", "repos", "close\t", "cat", "importar", "exportar", "salir", "terminar" }));
+        ComboBoxComando.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "df", "mount", "unmount", "ls", "rm", "open", "read", "write", "repos", "close", "cat", "importar", "exportar", "salir", "terminar" }));
         ComboBoxComando.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 ComboBoxComandoItemStateChanged(evt);
@@ -489,7 +489,23 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-
+                 if(findIDConflicto(TextFieldCampo1.getText()))
+                {
+                    mensaje.setMensaje(findASA(TextFieldCampo1.getText())+"");     
+                    for(int i = 0; i < _listaID.size(); i++)
+                    {
+                        if(_listaID.get(i).getId().equals(TextFieldCampo1.getText()))
+                        {
+                            _listaID.remove(i);
+                            break;
+                        }
+                    }           
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "ID no ha sido ligado con algun archivo", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
             }
             break;
             case 10: //
@@ -511,8 +527,12 @@ public class PaginaComandos extends javax.swing.JFrame {
                  if(!_banderaConexion)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
-            }else
-            if(TextFieldCampo1.getText().equals(""))
+            }
+            else if(_file == null)
+            {
+                 JOptionPane.showMessageDialog(this, "Debe elegir un arhcivo", "Shell", JOptionPane.ERROR_MESSAGE);
+            }             
+            else if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
             }
@@ -530,7 +550,13 @@ public class PaginaComandos extends javax.swing.JFrame {
              if(!_banderaConexion)
             {
                 JOptionPane.showMessageDialog(this, "No hay conexion con un Sistema de Archivos", "Shell", JOptionPane.ERROR_MESSAGE);
-            }else
+            }
+             else if(_file == null)
+             {
+                 JOptionPane.showMessageDialog(this, "Debe elegir un arhcivo", "Shell", JOptionPane.ERROR_MESSAGE);
+             }
+             
+             else
             if(TextFieldCampo1.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(this, "Campos en blanco", "Shell", JOptionPane.ERROR_MESSAGE);
