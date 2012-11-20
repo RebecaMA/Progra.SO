@@ -579,40 +579,6 @@ public class PaginaComandos extends javax.swing.JFrame {
             }  
             break;
         };
-
-        Mensaje _nuevoMensaje = new Mensaje();
-        String _mensaje = null;
-        _mensaje = ComboBoxComando.getSelectedItem().toString();
-        _manejadorArchivos = new ManejadorArchivos();
-
-        if(BotonFileChooser.isVisible()){
-            if(_mensaje.equals("Importar")){
-                _mensaje += " " + _nombreUsuario;
-                _mensaje += " " +TextFieldCampo1.getText();
-                _mensaje += " "+  _manejadorArchivos._leerArchivo(_file);
-            }else {
-                // Enviar q me de lo q escribo escribirlo
-                // y despues llamar a
-                _mensaje += " " +TextFieldCampo3.getText();
-                // Con eso me devuelve el contenidop en String exportarmensaje
-                //_manejadorArchivos._escribirArchivo(_File, exportarmensaje);
-
-            }
-        }
-        else{
-            if(TextFieldCampo1.isVisible())
-            {
-                _mensaje += " " +TextFieldCampo1.getText();
-            }else if(TextFieldCampo2.isVisible())
-            {
-                _mensaje += " " +TextFieldCampo2.getText();
-            }else if (TextFieldCampo3.isVisible())
-            {
-                _mensaje += " " +TextFieldCampo3.getText();
-            }
-        }
-
-        _nuevoMensaje.setMensaje(_mensaje);
     }//GEN-LAST:event_BotonAceptarActionPerformed
 
     private void TextFieldCampo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldCampo1ActionPerformed
