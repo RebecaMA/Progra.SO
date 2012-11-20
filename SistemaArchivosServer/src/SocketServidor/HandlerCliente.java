@@ -176,8 +176,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("close recibido");
                 msgSend.setTipoMensaje("close");
-                String parametros[] = msgReceive.getMensaje().split(" ");
-                _sa.cerrarArchivo(Integer.parseInt(parametros[0]));   
+                String parametro = msgReceive.getMensaje();
+                _sa.cerrarArchivo(Integer.parseInt(parametro));   
                 msgSend.setMensaje("Archivo Cerrado");  
                 enviarDatos(msgSend);                
             }
@@ -185,8 +185,8 @@ public class HandlerCliente implements Runnable{
             {
                 System.out.println("cat recibido");
                 msgSend.setTipoMensaje("cat");
-                String parametros[] = msgReceive.getMensaje().split(" ");
-                msgSend.setMensaje(_sa.catArchivo(parametros[0]));                
+                String parametro = msgReceive.getMensaje();
+                msgSend.setMensaje(_sa.catArchivo(parametro));                
                 enviarDatos(msgSend);
             }
             else if(msgReceive.getTipoMensaje().equals("importar"))
@@ -221,7 +221,11 @@ public class HandlerCliente implements Runnable{
                 String parametros[] = msgReceive.getMensaje().split("/");
                 _sa.deshablilitarSA(parametros[0]);                   
                 System.exit(0);
-            }           
+            }          
+            else
+            {
+                System.out.println("Funcion no reconocida: "+ msgReceive.getTipoMensaje()); 
+            }
         }
         catch(IOException exeptionES)
         {

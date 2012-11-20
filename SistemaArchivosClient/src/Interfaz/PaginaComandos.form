@@ -166,7 +166,7 @@
                 <StringItem index="6" value="read"/>
                 <StringItem index="7" value="write"/>
                 <StringItem index="8" value="repos"/>
-                <StringItem index="9" value="close&#x9;"/>
+                <StringItem index="9" value="close"/>
                 <StringItem index="10" value="cat"/>
                 <StringItem index="11" value="importar"/>
                 <StringItem index="12" value="exportar"/>
