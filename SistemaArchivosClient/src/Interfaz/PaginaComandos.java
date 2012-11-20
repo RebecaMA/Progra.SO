@@ -489,7 +489,15 @@ public class PaginaComandos extends javax.swing.JFrame {
             }
             else
             {
-
+                 if(findIDConflicto(TextFieldCampo1.getText()))
+                {
+                    mensaje.setMensaje(findASA(TextFieldCampo1.getText()) + "");                        
+                    TextAreaResultado.setText(TextAreaResultado.getText() + "\n" + _listaConexiones.get(_socketActivo).ejecutarCliente(mensaje));                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "ID no ha sido ligado con algun archivo", "Shell", JOptionPane.ERROR_MESSAGE);
+                }
             }
             break;
             case 10: //
